@@ -85,17 +85,17 @@ class Plugin {
   }
 
   resolveHtml (data, html, st) {
-    const route = Object.assign({}, data.plugin.options.route, html ? { html } : {})
-    const info = this.context.config.info
-    const web = this.context.config.web
-    const scripts = st ? this.context.config.scripts : []
-    const styles = this.context.config.styles
+    // const route = Object.assign({}, data.plugin.options.route, html ? { html } : {})
+    // const info = this.context.config.info
+    // const web = this.context.config.web
+    // const scripts = st ? this.context.config.scripts : []
+    // const styles = this.context.config.styles
 
-    const vars = JSON.stringify({ route: data.plugin.options.route })
+    // const vars = JSON.stringify({ route: data.plugin.options.route })
 
-    const app = { route, info, web, vars, scripts, styles }
+    // const app = { route, info, web, vars, scripts, styles }
 
-    data.html = ejs.render(data.html, { app })
+    // data.html = ejs.render(data.html, { app })
 
     return data
   }
@@ -118,16 +118,16 @@ class Plugin {
   }
 
   apply(compiler) {
-    compiler.hooks.compile.tap(this.constructor.name, () => this.onStart())
+    // compiler.hooks.compile.tap(this.constructor.name, () => this.onStart())
 
-    compiler.hooks.compilation.tap(this.constructor.name, compilation => {
-      compilation.hooks.buildModule.tap(this.constructor.name, (module) => this.onModuleStart(module))
-      compilation.hooks.succeedModule.tap(this.constructor.name, (module) => this.onModuleSuccess(module))
-      compilation.hooks.failedModule.tap(this.constructor.name, (module) => this.onModuleFailure(module))
-      compilation.hooks.htmlWebpackPluginBeforeHtmlProcessing.tapAsync(this.constructor.name, (data, done) => this.onPageGeneration(compilation, data, done))
-    })
+    // compiler.hooks.compilation.tap(this.constructor.name, compilation => {
+    //   compilation.hooks.buildModule.tap(this.constructor.name, (module) => this.onModuleStart(module))
+    //   compilation.hooks.succeedModule.tap(this.constructor.name, (module) => this.onModuleSuccess(module))
+    //   compilation.hooks.failedModule.tap(this.constructor.name, (module) => this.onModuleFailure(module))
+    //   compilation.hooks.htmlWebpackPluginBeforeHtmlProcessing.tapAsync(this.constructor.name, (data, done) => this.onPageGeneration(compilation, data, done))
+    // })
 
-    compiler.hooks.done.tap(this.constructor.name, (stats) => this.onDone(stats))
+    // compiler.hooks.done.tap(this.constructor.name, (stats) => this.onDone(stats))
   }
 }
 
