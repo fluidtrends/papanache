@@ -1,20 +1,18 @@
-'use strict'
-
 let chalk = require('chalk')
 let path = require('path')
 let Ora = require('ora')
 let ejs = require('ejs')
-const emotions = require('./emotions.json')
+const emotions = require('../../assets/emotions.json')
 
 class Plugin {
   constructor (context) {
     this._context = context
-    this._spinner = new Ora({ text: chalk.green('Chunky is getting ready to start working'), spinner: 'dots', color: 'yellow', stream: process.stdout })
+    this._spinner = new Ora({ text: chalk.green(`[${this.context.name}] getting ready to start working`), spinner: 'dots', color: 'yellow', stream: process.stdout })
   }
 
   emotion (type) {
     if (!emotions || !emotions[type]) {
-      return 'Chunky is somewhat confused.'
+      return `[${this.context.name}] I'm somewhat confused`
     }
 
     const expression = emotions[type].expression
@@ -95,9 +93,9 @@ class Plugin {
 
     const vars = JSON.stringify({ route: data.plugin.options.route })
 
-    const chunky = { route, info, web, vars, scripts, styles }
+    const app = { route, info, web, vars, scripts, styles }
 
-    data.html = ejs.render(data.html, { chunky })
+    data.html = ejs.render(data.html, { app })
 
     return data
   }
