@@ -1,14 +1,14 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const fs = require('fs-extra')
-const Router = require('../src/core/Router')
+const { createSectionRoutes } = require('./router')
 
 function generateDevPage (options, route) {
   return new HtmlWebpackPlugin({
     filename: 'index.html',
     route,
     inject: true,
-    template: path.resolve(options.root || options.dir, 'node_modules', 'react-dom-chunky', 'app', 'pages', 'default.html')
+    template: options.page.dev
   })
 }
 
@@ -30,14 +30,14 @@ function generateStaticPage (options, route) {
       removeComments: true
     },
     filename,
-    template: path.resolve(options.root || options.dir, 'node_modules', 'react-dom-chunky', 'app', 'pages', `${route.template || 'default'}.html`)
+    template: options.page.dev
   })
 }
 
-function chunkRoutes (chunk, options) {
+function sectionRoutes (section, options) {
   var r = []
-  for (const routeName in chunk.routes) {
-    const route = chunk.routes[routeName]
+  for (const routeName in section.routes) {
+    const route = section.routes[routeName]
 
     if (!route.path || (route.path && route.path.indexOf(':path') < 0)) {
       r.push(Object.assign({}, { id: routeName }, route, { location: (route.path ? `${route.path}` : '/') }))
@@ -49,7 +49,7 @@ function chunkRoutes (chunk, options) {
     }
 
     try {
-      const variants = require(path.resolve(options.dir, 'chunks', chunk.name, 'data', `${route.pathData}.json`))
+      const variants = require(path.resolve(options.dir, options.sectionsRoot, section.name, 'data', `${route.pathData}.json`))
       if (!variants || variants.length === 0) {
         return []
       }
@@ -67,19 +67,19 @@ function chunkRoutes (chunk, options) {
 function routes (options) {
   var r = []
 
-  for (const sectionName in options.config.sections) {
-    const section = options.config.sections[sectionName]
-    const sectionRoutes = Router.createSectionRoutes(section, (element, section) => {
-      var chunk
+  for (const sectionName in options.sections) {
+    const section = options.sections[sectionName]
+    const sectionRoutes = createSectionRoutes(section, (element, section) => {
+      var section
 
-      options.chunks.forEach(c => {
-        if (c.name === element) {
-          chunk = Object.assign({}, c)
+      options.sections.forEach(c => {
+        if (s.name === element) {
+          section = Object.assign({}, s)
         }
       })
 
-      if (chunk && chunk.routes && Object.keys(chunk.routes).length > 0) {
-        r = r.concat(chunkRoutes(chunk, options))
+      if (section && section.routes && Object.keys(section.routes).length > 0) {
+        r = r.concat(sectionRoutes(section, options))
       }
     })
   }

@@ -1,50 +1,79 @@
 const path = require('path')
 const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const StaticPlugin = require('./staticPlugin')
 const pages = require('./pages')
-const WebPlugin = require('./webPlugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = (options) => {
   const root = (options.root || options.dir)
   const dir = options.dir
-  const htmlPages = pages(options, true)
-  
-  return {
-    entry: [
-      'react-hot-loader/patch',
-      'webpack-dev-server/client',
-      'webpack/hot/only-dev-server',
-      path.resolve(root, 'node_modules', 'react-dom-chunky', 'app', 'index.dev.js')
-    ],
-    mode: 'development',
 
-    watch: true,
+  return {
+    entry: {
+      app: options.startScript.production
+    },
 
     output: {
-      filename: 'chunky.js',
-      path: path.resolve(dir, '.chunky', 'web'),
+      filename: `${options.name}.js`,
+      path: path.resolve(dir, `.${options.name}`, 'web'),
       publicPath: '/',
       libraryTarget: 'umd'
     },
 
-    devtool: 'inline-source-map',
-    target: 'web',
-
     resolve: {
       extensions: ['.js', '.json'],
-      alias: {
-        moment: 'moment/moment.js',
-        'react-dom': '@hot-loader/react-dom'
-      },
       modules: [
         path.resolve(dir),
         path.resolve(root, 'node_modules'),
         'node_modules'
-      ]
+      ],
+      alias: {
+        'react-dom': '@hot-loader/react-dom'
+      }
+    },
+
+    externals: {
+      react: {
+        root: 'React',
+        commonjs2: 'react',
+        commonjs: 'react',
+        amd: 'react'
+      },
+      'react-dom': {
+        root: 'ReactDOM',
+        commonjs2: 'react-dom',
+        commonjs: 'react-dom',
+        amd: 'react-dom'
+      }
+    //   'react-router': {
+    //     root: 'ReactRouter',
+    //     commonjs2: 'react-router',
+    //     commonjs: 'react-router',
+    //     amd: 'react-router'
+    //   },
+    //   'react-dom-router': {
+    //     root: 'ReactDOMRouter',
+    //     commonjs2: 'react-dom-router',
+    //     commonjs: 'react-dom-router',
+    //     amd: 'react-dom-router'
+    //   },
+    //   antd: {
+    //     root: 'antd',
+    //     commonjs2: 'antd',
+    //     commonjs: 'antd',
+    //     amd: 'antd'
+    //   },
+    //   moment: {
+    //     root: 'moment',
+    //     commonjs2: 'moment',
+    //     commonjs: 'moment',
+    //     amd: 'moment'
+    //   }
     },
 
     module: {
-      noParse: [/moment.js/],
       rules: [
         {
           test: /\.r.png$/,
@@ -80,10 +109,12 @@ module.exports = (options) => {
         },
         {
           test: /\.css$/,
-          use: ['style-loader', {
-            loader: 'css-loader',
-            options: { modules: true }
-          }]
+          use: ExtractTextPlugin.extract({
+            use: [{
+              loader: 'css-loader',
+              options: { modules: true }
+            }]
+          })
         },
         {
           test: /\.md$/,
@@ -100,11 +131,7 @@ module.exports = (options) => {
         },
         {
           test: /\.js$/,
-          include: [
-            path.resolve(root, 'node_modules', 'react-chunky'),
-            path.resolve(root, 'node_modules', 'react-dom-chunky'),
-            path.resolve(dir, 'chunks')
-          ],
+          include: options.srcDirs,
           use: {
             loader: 'babel-loader',
             options: {
@@ -113,10 +140,9 @@ module.exports = (options) => {
                   loose: true,
                   modules: false
                 }],
-                path.resolve(root, 'node_modules', '@babel/preset-react'),
+                path.resolve(root, 'node_modules', '@babel/preset-react')
               ],
               plugins: [
-                require.resolve('react-hot-loader/babel'),
                 require.resolve('styled-jsx/babel')
               ]
             }
@@ -126,40 +152,19 @@ module.exports = (options) => {
     },
 
     plugins: [
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
+      }),
+      new ExtractTextPlugin('chunky.css'),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new CopyWebpackPlugin([
-        { from: { glob: path.resolve(root, 'node_modules', 'react-dom-chunky', 'app', 'assets/**/*'), dot: false }, to: 'assets', flatten: 'true' },
+        { from: { glob: options.assetsGlob, dot: false }, to: 'assets', flatten: 'true' },
         { from: { glob: path.resolve(dir, 'assets/**/*'), dot: false, to: 'assets', flatten: 'true' } }
       ])
-    ]    
-
-    .concat(htmlPages)
-    .concat([new WebPlugin(Object.assign({}, options, { dev: true }))]),
-
-    devServer: {
-      host: '0.0.0.0',
-      inline: true,
-      quiet: true,
-      noInfo: true,
-      stats: {
-        assets: false,
-        colors: true,
-        version: false,
-        hash: false,
-        timings: false,
-        chunks: false,
-        chunkModules: false,
-        modules: false
-      },
-
-      port: options.port,
-      contentBase: path.resolve(dir, '.chunky', 'web'),
-      watchContentBase: true,
-      historyApiFallback: true,
-      hot: true
-    }
+    ].concat(pages(options)).concat([new StaticPlugin(Object.assign({}, options)),
+      new UglifyJsPlugin({
+        extractComments: true
+      })
+    ])
   }
 }
