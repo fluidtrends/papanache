@@ -23,6 +23,16 @@ function start (options, callback) {
       callback && callback(Object.assign({}, { compiled: false, compiling: true }))
     })
 
+    if (options.once) {
+      compiler.run((err, stats) => {
+        if (err || stats.hasErrors()) {
+          reject(err)
+        }
+      })
+      resolve({ port: options.port })
+      return 
+    }
+
     const server = new WebpackDevServer(compiler, setup.devServer)
     server.listen(options.port, '0.0.0.0', (error) => {
       if (error) {

@@ -8,13 +8,13 @@ const fs = require('fs-extra')
 savor.
 
 add('initial', (context, done) => {
-  savor.addAsset('assets/app', 'app', context)
-
-  const indexFile = path.resolve(context.dir, 'app', 'index.html')
-  const startFile = path.resolve(context.dir, 'app', 'index.js')
   const dir =  context.dir
   const root =  path.resolve(__dirname, '../..')
-  const assetsGlob = `${path.resolve(context.dir, 'app', 'resources')}/**/*`
+
+  const indexFile = path.resolve(root, 'test', 'assets', 'app', 'index.html')
+  const startFile = path.resolve(root, 'test', 'assets', 'app', 'index.js')
+
+  const assetsGlob = `${path.resolve(root, 'test', 'assets', 'app', 'resources')}/**/*`
 
   const srcDirs = [
     path.resolve(context.dir, 'app')
@@ -22,6 +22,7 @@ add('initial', (context, done) => {
 
   const options = {
     name: 'test',
+    once: true, 
     dir,
     assetsGlob,
     root,
