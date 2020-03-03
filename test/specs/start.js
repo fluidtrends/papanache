@@ -7,9 +7,9 @@ const fs = require('fs-extra')
 
 savor.
 
-add('initial', (context, done) => {
-  const dir =  context.dir
+add('starting up', (context, done) => {
   const root =  path.resolve(__dirname, '../..')
+  const dir =  context.dir
 
   const indexFile = path.resolve(root, 'test', 'assets', 'app', 'index.html')
   const startFile = path.resolve(root, 'test', 'assets', 'app', 'index.js')
@@ -41,7 +41,7 @@ add('initial', (context, done) => {
 
 
    savor.promiseShouldSucceed(start(options), done, (data) => {
-     console.log(data)
+     context.expect(data.port).to.equal(9999)
    })
 }).
 
