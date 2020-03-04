@@ -1,6 +1,6 @@
 {
   "name": "papanache",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Stylish Web Packer",
   "scripts": {
     "test": "savor test",
@@ -13,6 +13,7 @@
   "homepage": "https://github.com/fluidtrends/papanache",
   "dependencies": {
     "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
     "@babel/plugin-transform-destructuring": "^7.8.3",

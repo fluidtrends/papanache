@@ -9,4 +9,6 @@
 
 <p align="center">
 <a href="https://circleci.com/gh/fluidtrends/workflows/papanache"><img src="https://circleci.com/gh/fluidtrends/papanache.svg?style=svg"/></a>
+<a href="https://codeclimate.com/github/fluidtrends/papanache/maintainability"><img src="https://api.codeclimate.com/v1/badges/fe2c0e80d11ac003c35d/maintainability" /></a>
+<a href="https://codeclimate.com/github/fluidtrends/papanache/test_coverage"><img src="https://api.codeclimate.com/v1/badges/fe2c0e80d11ac003c35d/test_coverage" /></a>
 </p>
