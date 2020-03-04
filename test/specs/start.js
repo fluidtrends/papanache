@@ -13,12 +13,13 @@ add('starting up', (context, done) => {
 
   const indexFile = path.resolve(root, 'test', 'assets', 'app', 'index.html')
   const startFile = path.resolve(root, 'test', 'assets', 'app', 'index.js')
-
   const assetsGlob = `${path.resolve(root, 'test', 'assets', 'app', 'resources')}/**/*`
 
-  const srcDirs = [
-    path.resolve(context.dir, 'app')
-  ]
+  const config = {
+    info: {
+      test: "hello"
+    }
+  }
 
   const options = {
     name: 'test',
@@ -26,8 +27,8 @@ add('starting up', (context, done) => {
     dir,
     assetsGlob,
     root,
+    config,
     port: 9999,
-    srcDirs,
     page: {
       dev: indexFile
     },

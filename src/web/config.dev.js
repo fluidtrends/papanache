@@ -11,6 +11,8 @@ module.exports = (options) => {
   const dir = options.dir
 
   return {
+    context: path.resolve(root),
+    
     entry: [
       'react-hot-loader/patch',
       'webpack-dev-server/client',
@@ -39,7 +41,7 @@ module.exports = (options) => {
       },
       modules: [
         path.resolve(dir),
-        path.resolve(root, 'node_modules'),
+        path.resolve(root),
         'node_modules'
       ]
     },
