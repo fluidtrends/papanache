@@ -8,6 +8,9 @@ function start (options, callback) {
   return new Promise((resolve, reject) => {
     // Start off fresh
     process.noDeprecation = true
+    process.env.NODE_ENV = "development"
+    process.env.BABEL_ENV = "development"
+
     const dir = path.resolve(options.dir, `.${options.name}`, 'web')
     if (fs.existsSync(dir)) { fs.removeSync(dir) }
     fs.mkdirsSync(dir)
