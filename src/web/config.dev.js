@@ -19,8 +19,7 @@ module.exports = (options) => {
       'webpack/hot/only-dev-server',
       options.startScript.dev
     ],
-    mode: 'development',
-
+    mode: 'development',    
     watch: true,
 
     output: {
@@ -36,11 +35,11 @@ module.exports = (options) => {
     resolve: {
       extensions: ['.js', '.json'],
       alias: {
-        moment: 'moment/moment.js',
-        'react-dom': '@hot-loader/react-dom'
+        moment: 'moment/moment.js'
       },
       modules: [
         path.resolve(dir),
+        path.resolve(dir, "node_modules"),
         path.resolve(root),
         'node_modules'
       ]
@@ -65,22 +64,18 @@ module.exports = (options) => {
     .concat(pages(options, true))
     .concat([new WebPlugin(Object.assign({}, options, { dev: true }))]),
 
+    optimization: {
+      nodeEnv: 'development'
+    },
+
     devServer: {
       host: '0.0.0.0',
+      compress: false,
       inline: true,
-      quiet: true,
+      clientLogLevel: 'silent',
+      stats: 'none',
+      liveReload: true,
       noInfo: true,
-      stats: {
-        assets: false,
-        colors: true,
-        version: false,
-        hash: false,
-        timings: false,
-        chunks: false,
-        chunkModules: false,
-        modules: false
-      },
-
       port: options.port,
       contentBase: path.resolve(dir, `.${options.name}`, 'web'),
       watchContentBase: true,
