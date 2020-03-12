@@ -7,7 +7,12 @@ const emotions = require('../../assets/emotions.json')
 class Plugin {
   constructor (context) {
     this._context = context
+
+    process.stderr.write = Function.prototype
+    this._stderrWrite = process.stderr.write
+    this._modulesCounter = 0
     this._spinner = new Ora({ text: chalk.green(`[${this.context.name}] getting ready to start working`), spinner: 'dots', color: 'yellow', stream: process.stdout })
+    this.spinner.start()
   }
 
   emotion (type) {
@@ -42,13 +47,31 @@ class Plugin {
     return this._startTime
   }
 
-  onStart () {
+  get isDone() {
+    return this._done
+  }
+
+  get modulesCounter() {
+    return this._modulesCounter
+  }
+
+  onStart (data) {
+    if (this.startTime) {
+      return
+    }
+
     this._working = this.emotion("working")
     this._startTime = new Date().getTime()
-    this.spinner.start()
+    this.spinner.start()    
   }
 
   onModuleStart (module) {
+    if (!module.resource) {
+      // Ignore context logging
+      return
+    }
+
+    this.spinner.text = `${chalk.green(`[${this.context.name}]`)} ${chalk.green(this.working.expression)} ${chalk.gray(this.working.mood)}`
   }
 
   onModuleFailure (module) {
@@ -57,26 +80,26 @@ class Plugin {
       return
     }
 
-    var resource = module.resource.substring(path.resolve('.').length + 1)
-    this.spinner.fail(module.resource)
+    this.spinner.fail(resource)
     this.spinner.fail(module.error)
   }
 
   onModuleSuccess (module) {
-    if (module.errors && module.errors.length > 0) {
-      var resource = module.resource.substring(path.resolve('.').length + 1)
-      this.spinner.fail(resource)
-      this.spinner.fail(module.errors[0])
-      return
-    }
-
     if (!module.resource) {
       // Ignore context logging
       return
     }
 
-    var resource = module.resource.substring(path.resolve('.').length + 1)
-    this.spinner.text = `${chalk.green(this.working.expression)}  ${chalk.gray(this.working.mood)}`
+    if (module.errors && module.errors.length > 0) {
+      this.spinner.fail(module.resource)
+      this.spinner.fail(module.errors[0])
+      return
+    }
+
+    
+
+    ++this._modulesCounter
+    this.spinner.text = `${chalk.green(`[${this.context.name}]`)} ${chalk.green(this.working.expression)} ${chalk.gray(this.working.mood)}`
   }
 
   endTime (startTime) {
@@ -105,20 +128,36 @@ class Plugin {
   }
 
   onDone (stats) {
+    if (!this.isDone) {
+      return 
+    }
+
+    process.stderr.write = this._stderrWrite
     if (stats.compilation.errors && stats.compilation.errors.length > 0) {
       stats.compilation.errors.map(error => {
         this.spinner.fail(error)
       })
+
       this.spinner.fail(`${chalk.red(`[${this.context.name}] failed. Oh no, the horror.`)}`)
       return
     }
 
     const time = this.endTime(this.startTime)
+    this._startTime = null
     this.spinner.succeed(`${chalk.green(`[${this.context.name}] finished work in`)} ${chalk.bold(time)} ${chalk.gray(this.happy.expression)}  ${chalk.gray(this.happy.mood)}`)
   }
 
   apply(compiler) {
-    compiler.hooks.compile.tap(this.constructor.name, () => this.onStart())
+    compiler.hooks.assetEmitted.tap(this.constructor.name, (file, { content, source, outputPath, compilation, targetPath }) => {
+      const [id, type, ext] = file.split(".")
+      const relativeFile = path.relative(process.cwd(), file)
+
+      if (type === 'hot-update' && ext === 'json') {
+        this._done = true
+      }
+    })
+
+    compiler.hooks.compile.tap(this.constructor.name, (data) => this.onStart(data))
 
     compiler.hooks.compilation.tap(this.constructor.name, compilation => {
       compilation.hooks.buildModule.tap(this.constructor.name, (module) => this.onModuleStart(module))
