@@ -8,8 +8,8 @@ class Plugin {
   constructor (context) {
     this._context = context
 
-    process.stderr.write = Function.prototype
     this._stderrWrite = process.stderr.write
+    process.stderr.write = Function.prototype
     this._modulesCounter = 0
     this._spinner = new Ora({ text: chalk.green(`[${this.context.name}] getting ready to start working`), spinner: 'dots', color: 'yellow', stream: process.stdout })
     this.spinner.start()
@@ -96,9 +96,8 @@ class Plugin {
       return
     }
 
-    
-
     ++this._modulesCounter
+
     this.spinner.text = `${chalk.green(`[${this.context.name}]`)} ${chalk.green(this.working.expression)} ${chalk.gray(this.working.mood)}`
   }
 
@@ -149,9 +148,9 @@ class Plugin {
 
   apply(compiler) {
     compiler.hooks.assetEmitted.tap(this.constructor.name, (file, { content, source, outputPath, compilation, targetPath }) => {
-      const [id, type, ext] = file.split(".")
       const relativeFile = path.relative(process.cwd(), file)
-
+      const [id, type, ext] = file.split(".")
+      
       if (type === 'hot-update' && ext === 'json') {
         this._done = true
       }
