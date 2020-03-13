@@ -12,7 +12,6 @@ module.exports = (options) => {
 
   return {
     context: path.resolve(root),
-    
     entry: [
       'react-hot-loader/patch',
       'webpack-dev-server/client',
@@ -21,6 +20,27 @@ module.exports = (options) => {
     ],
     mode: 'development',    
     watch: true,
+
+    externals: {
+      react: {
+        root: 'React',
+        commonjs2: 'react',
+        commonjs: 'react',
+        amd: 'react'
+      },
+      'react-dom': {
+        root: 'ReactDOM',
+        commonjs2: 'react-dom',
+        commonjs: 'react-dom',
+        amd: 'react-dom'
+      },
+      antd: {
+          root: 'antd',
+          commonjs2: 'antd',
+          commonjs: 'antd',
+          amd: 'antd'
+      }
+    },
 
     output: {
       filename: `${options.name}.js`,
@@ -35,12 +55,14 @@ module.exports = (options) => {
     resolve: {
       extensions: ['.js', '.json'],
       alias: {
-        moment: 'moment/moment.js'
+        moment: 'moment/moment.js',
+        'react-dom': '@hot-loader/react-dom'
       },
       modules: [
         path.resolve(dir),
         path.resolve(dir, "node_modules"),
         path.resolve(root),
+        path.resolve(root, "node_modules"),
         'node_modules'
       ]
     },
@@ -57,7 +79,7 @@ module.exports = (options) => {
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new CopyWebpackPlugin([
         { from: { glob: options.assetsGlob, dot: false }, to: 'assets', flatten: 'true' },
-        { from: { glob: path.resolve(dir, 'assets/**/*'), dot: false, to: 'assets', flatten: 'true' } }
+        { from: { glob: path.resolve(dir, 'assets/**/*'), dot: false }, to: 'assets', flatten: 'true' }
       ])
     ]    
 
