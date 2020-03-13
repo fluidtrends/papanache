@@ -106,11 +106,11 @@ class Plugin {
     return (time < 1000 ? time + 'ms' : (parseFloat(time / 1000).toFixed(2) + 's'))
   }
 
-  resolveHtml (data, html, st) {
+  resolveHtml (data, html) {
     const route = Object.assign({}, data.plugin.options.route, html ? { html } : {})
     const info = this.context.config.info
     const web = this.context.config.web
-    const scripts = st ? this.context.config.scripts : []
+    const scripts = this.context.config.scripts
     const styles = this.context.config.styles
 
     const vars = JSON.stringify({ route: data.plugin.options.route })
@@ -127,20 +127,21 @@ class Plugin {
   }
 
   onDone (stats) {
-    if (!this.isDone) {
-      return 
-    }
-
-    process.stderr.write = this._stderrWrite
     if (stats.compilation.errors && stats.compilation.errors.length > 0) {
       stats.compilation.errors.map(error => {
         this.spinner.fail(error)
       })
 
       this.spinner.fail(`${chalk.red(`[${this.context.name}] failed. Oh no, the horror.`)}`)
+      process.stderr.write = this._stderrWrite
       return
     }
 
+    if (!this.isDone) {
+      return 
+    }
+
+    process.stderr.write = this._stderrWrite
     const time = this.endTime(this.startTime)
     this._startTime = null
     this.spinner.succeed(`${chalk.green(`[${this.context.name}] finished work in`)} ${chalk.bold(time)} ${chalk.gray(this.happy.expression)}  ${chalk.gray(this.happy.mood)}`)
