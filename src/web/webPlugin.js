@@ -109,13 +109,13 @@ class Plugin {
   resolveHtml (data, html) {
     const route = Object.assign({}, data.plugin.options.route, html ? { html } : {})
     const info = this.context.config.info
-    const web = this.context.config.web
-    const scripts = this.context.config.scripts
-    const styles = this.context.config.styles
 
+    const scripts = this.context.dev ? null : this.context.config.scripts.web
+    const styles = this.context.config.styles.web
+    
     const vars = JSON.stringify({ route: data.plugin.options.route })
 
-    const app = { route, info, web, vars, scripts, styles }
+    const app = { route, info, vars, scripts, styles }
 
     data.html = ejs.render(data.html, { app })
 
@@ -149,7 +149,6 @@ class Plugin {
 
   apply(compiler) {
     compiler.hooks.assetEmitted.tap(this.constructor.name, (file, { content, source, outputPath, compilation, targetPath }) => {
-      const relativeFile = path.relative(process.cwd(), file)
       const [id, type, ext] = file.split(".")
       
       if (type === 'hot-update' && ext === 'json') {

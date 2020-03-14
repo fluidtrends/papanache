@@ -1,9 +1,10 @@
 const path = require('path')
 
-module.exports = (options) => {
+module.exports = (options, dev) => {
   const root = (options.root || options.dir)
   const dir = options.dir
-  
+  const templateDir = options.templateDir || options.dir
+
   return [{
       test: /\.r.png$/,
       use: [{
@@ -58,9 +59,14 @@ module.exports = (options) => {
     },
     {
       test: /\.(js|jsx)$/,
+      include: [
+        path.resolve(dir),
+        path.resolve(templateDir)
+      ],
       use: {
         loader: 'babel-loader',
         options: {
+          configFile: path.resolve(root, `.babelrc${dev ? '.dev' : ''}.json`),
           presets: [
             [path.resolve(root, 'node_modules', '@babel/preset-env'), {
               loose: true,
