@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+
 const pages = require('./pages')
 const rules = require('./rules')
 const WebPlugin = require('./webPlugin')
@@ -9,6 +10,7 @@ const WebPlugin = require('./webPlugin')
 module.exports = (options) => {
   const root = (options.root || options.dir)
   const dir = options.dir
+  const templateDir = options.templateDir || options.dir
 
   return {
     context: path.resolve(root),
@@ -20,27 +22,6 @@ module.exports = (options) => {
     ],
     mode: 'development',    
     watch: true,
-
-    externals: {
-      react: {
-        root: 'React',
-        commonjs2: 'react',
-        commonjs: 'react',
-        amd: 'react'
-      },
-      'react-dom': {
-        root: 'ReactDOM',
-        commonjs2: 'react-dom',
-        commonjs: 'react-dom',
-        amd: 'react-dom'
-      },
-      antd: {
-          root: 'antd',
-          commonjs2: 'antd',
-          commonjs: 'antd',
-          amd: 'antd'
-      }
-    },
 
     output: {
       filename: `${options.name}.js`,
@@ -56,11 +37,13 @@ module.exports = (options) => {
       extensions: ['.js', '.json'],
       alias: {
         moment: 'moment/moment.js',
-        'react-dom': '@hot-loader/react-dom'
+        'react-dom': require.resolve('@hot-loader/react-dom')
       },
       modules: [
         path.resolve(dir),
         path.resolve(dir, "node_modules"),
+        path.resolve(templateDir),
+        path.resolve(templateDir, "node_modules"),
         path.resolve(root),
         path.resolve(root, "node_modules"),
         'node_modules'
@@ -69,7 +52,7 @@ module.exports = (options) => {
 
     module: {
       noParse: [/moment.js/],
-      rules: rules(options)
+      rules: rules(options, true)
     },
 
     plugins: [
