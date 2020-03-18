@@ -1,10 +1,12 @@
-'use strict'
-
 let WebPlugin = require('./webPlugin')
 let requireFromString = require('require-from-string')
 let ejs = require('ejs')
 
 class Plugin extends WebPlugin {
+
+  constructor (context) {
+    super(context)
+  }
 
   loadMainModule (compilation) {
     if (this._mainModule) {
@@ -12,7 +14,7 @@ class Plugin extends WebPlugin {
     }
 
     // We're only loading chunky once
-    const bundle = compilation.assets['chunky.js']
+    const bundle = compilation.assets[`.${this.context.name}`]
     const source = bundle.source()
 
     try {
