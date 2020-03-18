@@ -8,7 +8,7 @@ function generateDevPage (options, route) {
     filename: 'index.html',
     route,
     inject: true,
-    template: options.page.dev
+    template: options.page
   })
 }
 
@@ -30,7 +30,7 @@ function generateStaticPage (options, route) {
       removeComments: true
     },
     filename,
-    template: options.page.dev
+    template: options.page
   })
 }
 

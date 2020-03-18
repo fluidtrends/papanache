@@ -1,5 +1,4 @@
 const path = require('path')
-const fs = require('fs-extra')
 const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
@@ -18,21 +17,18 @@ module.exports = (options) => {
       'react-hot-loader/patch',
       'webpack-dev-server/client',
       'webpack/hot/only-dev-server',
-      options.startScript.dev
+      options.script
     ],
     mode: 'development',    
     watch: true,
-
     output: {
       filename: `${options.name}.js`,
       path: path.resolve(dir, `.${options.name}`, 'web'),
       publicPath: '/',
       libraryTarget: 'umd'
     },
-
     devtool: 'inline-source-map',
     target: 'web',
-
     resolve: {
       extensions: ['.js', '.json'],
       alias: {
@@ -62,7 +58,7 @@ module.exports = (options) => {
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new CopyWebpackPlugin([
         { from: { glob: options.assetsGlob, dot: false }, to: 'assets', flatten: 'true' },
-        { from: { glob: path.resolve(dir, 'assets/**/*'), dot: false }, to: 'assets', flatten: 'true' }
+        { from: { glob: path.resolve(dir, 'assets/**/*'), dot: false, to: 'assets', flatten: 'true' }}
       ])
     ]    
 
