@@ -4,7 +4,7 @@ let webpack = require('webpack')
 let config = require('./config')
 let copyfiles = require('copyfiles')
 
-function build (options) {
+function make (options) {
   return new Promise((resolve, reject) => {
     // Start off fresh
     const dir = path.resolve(options.dir, `.${options.name}`, 'web')
@@ -22,9 +22,9 @@ function build (options) {
         reject(error)
         return
       }
-      copyfiles(['./web/public/*/**', './web/build'], { up: 2 }, () => resolve())
+      copyfiles(['./web/public/*/**', './web/make'], { up: 2 }, () => resolve())
     })
   })
 }
 
-module.exports = build
+module.exports = make
