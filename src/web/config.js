@@ -15,9 +15,9 @@ module.exports = (options) => {
 
   return {
     context: path.resolve(root),
-    entry: {
-      app: options.script
-    },
+    entry: [
+      options.script
+    ],
     output: {
       filename: `${options.name}.js`,
       path: path.resolve(dir, `.${options.name}`, 'web'),

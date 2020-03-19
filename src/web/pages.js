@@ -67,19 +67,19 @@ function sectionRoutes (section, options) {
 function routes (options) {
   var r = []
 
-  for (const sectionName in options.sections) {
-    const section = options.sections[sectionName]
-    const sectionRoutes = createSectionRoutes(section, (element, section) => {
-      var section
+  for (const sectionName in options.config.app) {
+    const section = options.config.app[sectionName]
+    const sectionRoutesBuilder = createSectionRoutes(section, (element, section) => {
+      var appSection
 
-      options.sections.forEach(c => {
+      options.sections.forEach(s => {
         if (s.name === element) {
-          section = Object.assign({}, s)
+          appSection = Object.assign({}, s)
         }
       })
 
-      if (section && section.routes && Object.keys(section.routes).length > 0) {
-        r = r.concat(sectionRoutes(section, options))
+      if (appSection && appSection.routes && Object.keys(appSection.routes).length > 0) {
+        r = r.concat(sectionRoutes(appSection, options))
       }
     })
   }

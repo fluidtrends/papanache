@@ -148,9 +148,10 @@ class Plugin {
   }
 
   apply(compiler) {
+    console.log('ddd')
+
     compiler.hooks.assetEmitted.tap(this.constructor.name, (file, { content, source, outputPath, compilation, targetPath }) => {
       const [id, type, ext] = file.split(".")
-      
       if (type === 'hot-update' && ext === 'json') {
         this._done = true
       }
