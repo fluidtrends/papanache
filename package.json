@@ -1,6 +1,6 @@
 {
   "name": "papanache",
-  "version": "1.4.5",
+  "version": "1.6.0",
   "description": "Stylish Web Packer",
   "scripts": {
     "test": "savor test",
@@ -31,7 +31,7 @@
     "copyfiles": "^1.2.0",
     "cross-env": "^3.1.4",
     "ejs": "^3.0.1",
-    "extract-text-webpack-plugin": "^2.1.2",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "0.11.2",
     "html-loader": "^0.5.1",
     "html-webpack-plugin": "^3.2.0",
