@@ -14,11 +14,12 @@ class Plugin extends WebPlugin {
     }
 
     // We're only loading chunky once
-    const bundle = compilation.assets[`.${this.context.name}`]
+    const bundle = compilation.assets[`${this.context.name}.js`]
     const source = bundle.source()
+    const header = `var self = {}; global.document = { querySelector: Function.prototype }; global.window = {}; global.window.navigator = {};`
 
     try {
-      this._mainModule = requireFromString(`var self = {};${source}`)
+      this._mainModule = requireFromString(`${header}; ${source}`)
       return this._mainModule
     } catch (e) {
       console.log(e)
