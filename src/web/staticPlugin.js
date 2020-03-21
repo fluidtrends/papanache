@@ -19,8 +19,11 @@ class Plugin extends WebPlugin {
     const source = bundle.source()
     // const header = `var self = {}; global.document = { querySelector: Function.prototype }; global.window = {}; global.window.navigator = {};`
     const header = `
-    const jsdom = require("jsdom"); const { JSDOM } = jsdom; 
-    const { window, document } = new JSDOM("<!DOCTYPE html><div/>");`
+    const jsdom = require("jsdom"); 
+    const { JSDOM } = jsdom; 
+    const __DOM = new JSDOM("<!DOCTYPE html><div/>");
+    const { window, document } = __DOM;
+    `
     
     try {
       this._mainModule = requireFromString(`${header}; ${source}`)
