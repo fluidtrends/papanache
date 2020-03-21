@@ -1,7 +1,6 @@
 const WebPlugin = require('./webPlugin')
 const requireFromString = require('require-from-string')
 const ejs = require('ejs')
-const fs = require('fs-extra')
 
 class Plugin extends WebPlugin {
 
