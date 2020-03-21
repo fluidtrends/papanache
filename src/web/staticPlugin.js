@@ -21,14 +21,14 @@ class Plugin extends WebPlugin {
     const jsdom = require("jsdom"); 
     const { JSDOM } = jsdom; 
     const __DOM = new JSDOM("<!DOCTYPE html><div/>");
-    const { window, document } = __DOM;
+    const { window } = __DOM;
+    const { document } = window;
     `
     
     try {
       this._mainModule = requireFromString(`${header}; ${source}`)
       return this._mainModule
     } catch (e) {
-      console.log(e)
     }
   }
 
@@ -43,7 +43,7 @@ class Plugin extends WebPlugin {
     const route = data.plugin.options.route
 
     main.renderStaticPage(route)
-         .then(html => done(null, this.resolveHtml(data, html, true)))
+         .then(html => done(null, this.resolveHtml(data, html)))
          .catch((error) => done(error))
   }
 }

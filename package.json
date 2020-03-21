@@ -1,6 +1,6 @@
 {
   "name": "papanache",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Stylish Web Packer",
   "scripts": {
     "test": "savor test",
