@@ -1,7 +1,8 @@
-let WebPlugin = require('./webPlugin')
-let requireFromString = require('require-from-string')
-let ejs = require('ejs')
-
+const WebPlugin = require('./webPlugin')
+const requireFromString = require('require-from-string')
+const ejs = require('ejs')
+const fs = require('fs-extra')
+const 
 class Plugin extends WebPlugin {
 
   constructor (context) {
@@ -16,8 +17,11 @@ class Plugin extends WebPlugin {
     // We're only loading chunky once
     const bundle = compilation.assets[`${this.context.name}.js`]
     const source = bundle.source()
-    const header = `var self = {}; global.document = { querySelector: Function.prototype }; global.window = {}; global.window.navigator = {};`
-
+    // const header = `var self = {}; global.document = { querySelector: Function.prototype }; global.window = {}; global.window.navigator = {};`
+    const header = `
+    const jsdom = require("jsdom"); const { JSDOM } = jsdom; 
+    const { window, document } = new JSDOM("<!DOCTYPE html><div/>");`
+    
     try {
       this._mainModule = requireFromString(`${header}; ${source}`)
       return this._mainModule
