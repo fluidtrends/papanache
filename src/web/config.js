@@ -29,8 +29,7 @@ module.exports = (options) => {
     resolve: {
       extensions: ['.js', '.json'],
       alias: {
-        moment: 'moment/moment.js',
-        'react-dom': require.resolve('@hot-loader/react-dom')
+        moment: 'moment/moment.js'
       },
       modules: [
         path.resolve(dir),
