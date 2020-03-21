@@ -137,7 +137,7 @@ class Plugin {
       return
     }
 
-    if (!this.isDone) {
+    if (this.context.dev && !this.isDone) {
       return 
     }
 
