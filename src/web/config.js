@@ -13,6 +13,13 @@ module.exports = (options) => {
   const dir = options.dir
   const templateDir = options.templateDir || options.dir
 
+  const targetDir = path.resolve(dir, `.${options.name}`, 'web')
+  const targetAssetsDir = `${path.resolve(targetDir, 'assets')}/`
+
+  const templateAssets = options.templateAssets || []
+  const assetScripts = templateAssets.map(asset => ({ context: path.resolve(templateDir, asset.path), from: asset.glob }))
+                       .concat([{ context: path.resolve(dir, 'assets'), from: '**/*' }])
+
   return {
     context: path.resolve(root),
     entry: [
@@ -20,7 +27,7 @@ module.exports = (options) => {
     ],
     output: {
       filename: `${options.name}.js`,
-      path: path.resolve(dir, `.${options.name}`, 'web'),
+      path: targetDir,
       publicPath: '/',
       libraryTarget: 'umd'
     },
@@ -53,10 +60,7 @@ module.exports = (options) => {
       }),
       new ExtractTextPlugin('style.css'),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      new CopyWebpackPlugin([
-        { from: options.assetsGlob, to: 'assets', flatten: 'true',  globOptions: { dot: false } },
-        { from: path.resolve(dir, 'assets/**/*'), to: 'assets', flatten: 'true',  globOptions: { dot: false } }
-      ])
+      new CopyWebpackPlugin(assetScripts.map(asset => Object.assign({}, asset, { to: targetAssetsDir, toType: 'dir', force: true })))
     ].concat(pages(options)).concat([new StaticPlugin(Object.assign({}, options)),
       new UglifyJsPlugin({
         extractComments: true
