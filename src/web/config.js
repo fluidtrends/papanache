@@ -54,8 +54,8 @@ module.exports = (options) => {
       new ExtractTextPlugin('style.css'),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new CopyWebpackPlugin([
-        { from: { glob: options.assetsGlob, dot: false }, to: 'assets', flatten: 'true' },
-        { from: { glob: path.resolve(dir, 'assets/**/*'), dot: false, to: 'assets', flatten: 'true' }}
+        { from: options.assetsGlob, to: 'assets', flatten: 'true',  globOptions: { dot: false } },
+        { from: path.resolve(dir, 'assets/**/*'), to: 'assets', flatten: 'true',  globOptions: { dot: false } }
       ])
     ].concat(pages(options)).concat([new StaticPlugin(Object.assign({}, options)),
       new UglifyJsPlugin({

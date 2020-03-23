@@ -11,6 +11,8 @@ module.exports = (options) => {
   const dir = options.dir
   const templateDir = options.templateDir || options.dir
 
+  console.log(options)
+  
   return {
     context: path.resolve(root),
     entry: [
@@ -57,8 +59,8 @@ module.exports = (options) => {
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new CopyWebpackPlugin([
-        { from: { glob: options.assetsGlob, dot: false }, to: 'assets', flatten: 'true' },
-        { from: { glob: path.resolve(dir, 'assets/**/*'), dot: false, to: 'assets', flatten: 'true' }}
+        { from: options.assetsGlob, to: 'assets', flatten: 'true',  globOptions: { dot: false } },
+        { from: path.resolve(dir, 'assets/**/*'), to: 'assets', flatten: 'true',  globOptions: { dot: false } }
       ])
     ]    
 
