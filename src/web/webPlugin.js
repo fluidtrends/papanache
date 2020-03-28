@@ -11,7 +11,7 @@ class Plugin {
     this._stderrWrite = process.stderr.write
     process.stderr.write = Function.prototype
     this._modulesCounter = 0
-    this._spinner = new Ora({ text: chalk.green(`[${this.context.name}] getting ready to start working`), spinner: 'dots', color: 'yellow', stream: process.stdout })
+    this._spinner = new Ora({ text: chalk.green(`Getting ready to start working`), spinner: 'dots', color: 'yellow', stream: process.stdout })
     this.spinner.start()
   }
 
@@ -71,7 +71,7 @@ class Plugin {
       return
     }
 
-    this.spinner.text = `${chalk.green(`[${this.context.name}]`)} ${chalk.green(this.working.expression)} ${chalk.gray(this.working.mood)}`
+    this.spinner.text = `${chalk.green(this.working.expression)} ${chalk.gray(this.working.mood)}`
   }
 
   onModuleFailure (module) {
@@ -98,7 +98,7 @@ class Plugin {
 
     ++this._modulesCounter
 
-    this.spinner.text = `${chalk.green(`[${this.context.name}]`)} ${chalk.green(this.working.expression)} ${chalk.gray(this.working.mood)}`
+    this.spinner.text = `${chalk.green(this.working.expression)} ${chalk.gray(this.working.mood)}`
   }
 
   endTime (startTime) {
@@ -144,7 +144,7 @@ class Plugin {
     process.stderr.write = this._stderrWrite
     const time = this.endTime(this.startTime)
     this._startTime = null
-    this.spinner.succeed(`${chalk.green(`[${this.context.name}] finished work in`)} ${chalk.bold(time)} ${chalk.gray(this.happy.expression)}  ${chalk.gray(this.happy.mood)}`)
+    this.spinner.succeed(`${chalk.green(`finished work in`)} ${chalk.bold(time)} ${chalk.gray(this.happy.expression)}  ${chalk.gray(this.happy.mood)}`)
   }
 
   apply(compiler) {
