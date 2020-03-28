@@ -1,8 +1,5 @@
 const path = require('path')
 const fs = require('fs-extra')
-const webpack = require('webpack')
-const config = require('../config')
-const copyfiles = require('copyfiles')
 const bs = require('browser-sync').create()
 
 module.exports = (options) => new Promise((resolve, reject) => {
