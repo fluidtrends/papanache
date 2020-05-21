@@ -1,6 +1,6 @@
-const path = require('path')
+import path from 'path'
 
-module.exports = (options, dev) => {
+export function ConfigRules (options: any, dev: boolean): any[] {
   const root = (options.root || options.dir)
   const dir = options.dir
   const templateDir = options.templateDir || options.dir
@@ -80,5 +80,19 @@ module.exports = (options, dev) => {
           ]
         }
       }
+    }, 
+    {
+      test: /\.ts(x?)$/,
+      exclude: /node_modules/,
+      use: [
+          {
+              loader: "ts-loader"
+          }
+      ]
+    },
+    {
+        enforce: "pre",
+        test: /\.js$/,
+        loader: "source-map-loader"
     }]
 }

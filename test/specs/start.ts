@@ -1,18 +1,21 @@
-/* eslint-disable no-unused-expressions */
+import path from 'path'
+import savor, {
+  Context, 
+  Completion
+} from 'savor'
 
-const savor = require('savor')
-const start = require('../../src/web/start')
-const path = require('path')
-const fs = require('fs-extra')
+import {
+  web
+} from '../../src'
 
 savor.
 
-add('starting up', (context, done) => {
+add('starting up', (context: Context, done: Completion) => {
   const root =  path.resolve(__dirname, '../..')
   const dir =  context.dir
 
   const indexFile = path.resolve(root, 'test', 'assets', 'app', 'index.html')
-  const startFile = path.resolve(root, 'test', 'assets', 'app', 'index.js')
+  const startFile = path.resolve(root, 'test', 'assets', 'app', 'index.tsx')
   const assetsGlob = `${path.resolve(root, 'test', 'assets', 'app', 'resources')}/**/*`
 
   const config = {
@@ -32,17 +35,16 @@ add('starting up', (context, done) => {
     page: {
       dev: indexFile
     },
-    startScript: {
-      dev: startFile
-    },
+    script: startFile,
     sections: [{
       name: "intro"
     }]
   }
 
-
-   savor.promiseShouldSucceed(start(options), done, (data) => {
-     context.expect(data.port).to.equal(9999)
+   savor.promiseShouldSucceed(web.start(options, (message: any) => {
+     console.log(message)
+   }), done, (data) => {
+     console.log(data)
    })
 }).
 
