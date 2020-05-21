@@ -1,12 +1,20 @@
-const path = require('path')
-const webpack = require('webpack')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+import path from 'path'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
 
-const pages = require('./pages')
-const rules = require('./rules')
-const WebPlugin = require('./webPlugin')
+import webpack, {
+  Configuration
+} from 'webpack'
 
-module.exports = (options) => {
+import {
+  ConfigRules 
+} from '../config'
+
+import {
+  pages, 
+  WebPlugin
+} from '../runtime'
+
+export function DevConfig (options: any): Configuration {
   const root = (options.root || options.dir)
   const dir = options.dir
   const templateDir = options.templateDir || options.dir
@@ -15,7 +23,7 @@ module.exports = (options) => {
   const targetAssetsDir = `${path.resolve(targetDir, 'assets')}/`
 
   const templateAssets = options.templateAssets || []
-  const assetScripts = templateAssets.map(asset => ({ context: path.resolve(templateDir, asset.path), from: asset.glob }))
+  const assetScripts = templateAssets.map((asset: any) => ({ context: path.resolve(templateDir, asset.path), from: asset.glob }))
                        .concat([{ context: path.resolve(dir, 'assets'), from: '**/*' }])
   
   return {
@@ -34,10 +42,10 @@ module.exports = (options) => {
       publicPath: '/',
       libraryTarget: 'umd'
     },
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     target: 'web',
     resolve: {
-      extensions: ['.js', '.json'],
+      extensions: ['.tsx', '.ts', '.js', '.json'],
       alias: {
         moment: 'moment/moment.js',
         'react-dom': require.resolve('@hot-loader/react-dom')
@@ -55,7 +63,7 @@ module.exports = (options) => {
 
     module: {
       noParse: [/moment.js/],
-      rules: rules(options, true)
+      rules: ConfigRules(options, true)
     },
 
     plugins: [
@@ -63,8 +71,8 @@ module.exports = (options) => {
       new webpack.NamedModulesPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      new CopyWebpackPlugin(assetScripts.map(asset => Object.assign({}, asset, { to: targetAssetsDir, toType: 'dir', force: true })))
-    ]    
+      new CopyWebpackPlugin(assetScripts.map((asset: any) => Object.assign({}, asset, { to: targetAssetsDir, toType: 'dir', force: true })))
+    ]
 
     .concat(pages(options, true))
     .concat([new WebPlugin(Object.assign({}, options, { dev: true }))]),

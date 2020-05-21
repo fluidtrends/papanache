@@ -5,7 +5,6 @@ node_modules
 .chunky
 coverage
 build
-package-lock.json
 \.idea/
 dist
 cc-test-reporter

@@ -1,14 +1,21 @@
-const path = require('path')
-const webpack = require('webpack')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+import CopyWebpackPlugin from 'copy-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
+import path from 'path'
 
-const pages = require('./pages')
-const rules = require('./rules')
-const StaticPlugin = require('./staticPlugin')
+import webpack, {
+  Configuration
+} from 'webpack'
 
-module.exports = (options) => {
+import {
+  ConfigRules
+} from '.'
+import {
+  pages,
+  StaticPlugin 
+} from '../runtime'
+
+export function ProdConfig (options: any): Configuration {
   const root = (options.root || options.dir)
   const dir = options.dir
   const templateDir = options.templateDir || options.dir
@@ -17,7 +24,7 @@ module.exports = (options) => {
   const targetAssetsDir = `${path.resolve(targetDir, 'assets')}/`
 
   const templateAssets = options.templateAssets || []
-  const assetScripts = templateAssets.map(asset => ({ context: path.resolve(templateDir, asset.path), from: asset.glob }))
+  const assetScripts = templateAssets.map((asset: any) => ({ context: path.resolve(templateDir, asset.path), from: asset.glob }))
                        .concat([{ context: path.resolve(dir, 'assets'), from: '**/*' }])
 
   return {
@@ -34,7 +41,7 @@ module.exports = (options) => {
     mode: 'production',    
     target: "web",
     resolve: {
-      extensions: ['.js', '.json'],
+      extensions: ['.tsx', '.ts', '.js', '.json'],
       alias: {
         moment: 'moment/moment.js'
       },
@@ -51,7 +58,7 @@ module.exports = (options) => {
 
     module: {
       noParse: [/moment.js/],
-      rules: rules(options, true)
+      rules: ConfigRules(options, true)
     },
 
     plugins: [
@@ -60,8 +67,8 @@ module.exports = (options) => {
       }),
       new ExtractTextPlugin('style.css'),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      new CopyWebpackPlugin(assetScripts.map(asset => Object.assign({}, asset, { to: targetAssetsDir, toType: 'dir', force: true })))
-    ].concat(pages(options)).concat([new StaticPlugin(Object.assign({}, options)),
+      new CopyWebpackPlugin(assetScripts.map((asset: any) => Object.assign({}, asset, { to: targetAssetsDir, toType: 'dir', force: true })))
+    ].concat(pages(options, false)).concat([new StaticPlugin(Object.assign({}, options)),
       new UglifyJsPlugin({
         extractComments: true
       })

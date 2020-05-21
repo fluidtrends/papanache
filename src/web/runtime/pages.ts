@@ -1,9 +1,11 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const path = require('path')
-const fs = require('fs-extra')
-const { createSectionRoutes } = require('./router')
+import path from 'path'
 
-function generateDevPage (options, route) {
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import { 
+  createSectionRoutes 
+} from './router'
+
+function generateDevPage (options: any, route: any) {
   return new HtmlWebpackPlugin({
     filename: 'index.html',
     route,
@@ -12,7 +14,7 @@ function generateDevPage (options, route) {
   })
 }
 
-function generateStaticPage (options, route) {
+function generateStaticPage (options: any, route: any) {
   var filename = `${(route.path && route.path !== '/') ? route.path + '/' : ''}index.html`
   if (filename[0] === '/') {
     filename = filename.substring(1)
@@ -34,7 +36,7 @@ function generateStaticPage (options, route) {
   })
 }
 
-function sectionRoutes (section, options) {
+function sectionRoutes (section: any, options: any) {
   var r = []
   for (const routeName in section.routes) {
     const route = section.routes[routeName]
@@ -54,7 +56,7 @@ function sectionRoutes (section, options) {
         return []
       }
 
-      variants.forEach(variant => {
+      variants.forEach((variant: any) => {
         const newPath = route.path.replace(/:path/g, variant.path)
         r.push(Object.assign({}, { id: routeName }, route, { location: (route.path ? `/${route.path}` : '/'), path: newPath }, variant))
       })
@@ -64,15 +66,15 @@ function sectionRoutes (section, options) {
   return r
 }
 
-function routes (options) {
-  var r = []
+function routes (options: any) {
+  var r: any[] = []
 
   for (const sectionName in options.config.app) {
     const section = options.config.app[sectionName]
-    const sectionRoutesBuilder = createSectionRoutes(section, (element, section) => {
-      var appSection
+    const sectionRoutesBuilder = createSectionRoutes(section, (element: any, section: any) => {
+      var appSection: any;
 
-      options.sections.forEach(s => {
+      options.sections.forEach((s: any) => {
         if (s.name === element) {
           appSection = Object.assign({}, s)
         }
@@ -87,7 +89,7 @@ function routes (options) {
   return r
 }
 
-function pages (options, dev) {
+export function pages (options: any, dev: boolean) {
   const r = routes(options)
 
   if (dev) {
@@ -97,5 +99,3 @@ function pages (options, dev) {
   // Add static pages
   return r.map(route => generateStaticPage(options, route))
 }
-
-module.exports = pages
