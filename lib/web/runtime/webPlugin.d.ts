@@ -1,8 +1,8 @@
 export declare class WebPlugin {
-    protected _context: any;
+    protected _context?: any;
     protected _done: boolean;
     protected _startTime?: number;
-    constructor(context: any);
+    constructor(context?: any);
     get context(): any;
     get startTime(): number | undefined;
     get isDone(): boolean;
