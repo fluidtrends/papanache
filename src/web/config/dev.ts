@@ -80,14 +80,13 @@ export function DevConfig (options: PackingOptions): Configuration {
       liveReload: true,
       port: options.port,
       contentBase: options.targetDir,
-      historyApiFallback: true
+      historyApiFallback: true,
+      clientLogLevel: 'silent',
+      stats: 'none',
+      noInfo: true,
+      watchContentBase: true,
+      hot: true
     }
   }
 }
 
-// clientLogLevel: 'silent',
-// stats: 'none',
-// liveReload: true,
-// noInfo: true,
-// watchContentBase: true,
-// hot: true
