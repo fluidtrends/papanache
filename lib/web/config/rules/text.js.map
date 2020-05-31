@@ -1,0 +1,1 @@
+{"version":3,"file":"text.js","sourceRoot":"","sources":["../../../../src/web/config/rules/text.ts"],"names":[],"mappings":";;AAAA,mBAAe,UAAC,IAAU,IAAK,OAAA,CAAC;QAC5B,IAAI,EAAE,OAAO;QACb,GAAG,EAAE;YACH;gBACE,MAAM,EAAE,aAAa;aACtB;YACD;gBACE,MAAM,EAAE,iBAAiB;gBACzB,OAAO,EAAE,EACR;aACF;SACF;KACJ,CAAC,EAZ6B,CAY7B,EAAA"}

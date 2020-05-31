@@ -1,2 +1,2 @@
 export * from './types';
-export * as web from './web';
+export * from './WebPacker';

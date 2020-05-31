@@ -5,97 +5,97 @@ import {
   createSectionRoutes 
 } from './router'
 
-function generateDevPage (options: any, route: any) {
-  return new HtmlWebpackPlugin({
-    filename: 'index.html',
-    route,
-    inject: true,
-    template: options.page
-  })
-}
-
-function generateStaticPage (options: any, route: any) {
-  var filename = `${(route.path && route.path !== '/') ? route.path + '/' : ''}index.html`
-  if (filename[0] === '/') {
-    filename = filename.substring(1)
-  }
-
+function generateDevPage () {
   return new HtmlWebpackPlugin({
     cache: false,
-    route,
-    inject: true,
-    minify: {
-      removeAttributeQuotes: true,
-      collapseWhitespace: true,
-      collapseInlineTagWhitespace: true,
-      conservativeCollapse: true,
-      removeComments: true
-    },
-    filename,
-    template: options.page
+    filename: 'index.html',
+    inject: false,
+    template: 'page.ejs'
   })
 }
 
-function sectionRoutes (section: any, options: any) {
-  var r = []
-  for (const routeName in section.routes) {
-    const route = section.routes[routeName]
+// function generateStaticPage (options: any, route: any) {
+//   var filename = `${(route.path && route.path !== '/') ? route.path + '/' : ''}index.html`
+//   if (filename[0] === '/') {
+//     filename = filename.substring(1)
+//   }
 
-    if (!route.path || (route.path && route.path.indexOf(':path') < 0)) {
-      r.push(Object.assign({}, { id: routeName }, route, { location: (route.path ? `${route.path}` : '/') }))
-      break
-    }
+//   return new HtmlWebpackPlugin({
+//     cache: false,
+//     route,
+//     inject: true,
+//     minify: {
+//       removeAttributeQuotes: true,
+//       collapseWhitespace: true,
+//       collapseInlineTagWhitespace: true,
+//       conservativeCollapse: true,
+//       removeComments: true
+//     },
+//     filename,
+//     template: options.page
+//   })
+// }
 
-    if (!route.pathData) {
-      return []
-    }
+// function sectionRoutes (section: any, options: any) {
+//   var r = []
+//   for (const routeName in section.routes) {
+//     const route = section.routes[routeName]
 
-    try {
-      const variants = require(path.resolve(options.dir, options.sectionsRoot, section.name, 'data', `${route.pathData}.json`))
-      if (!variants || variants.length === 0) {
-        return []
-      }
+//     if (!route.path || (route.path && route.path.indexOf(':path') < 0)) {
+//       r.push(Object.assign({}, { id: routeName }, route, { location: (route.path ? `${route.path}` : '/') }))
+//       break
+//     }
 
-      variants.forEach((variant: any) => {
-        const newPath = route.path.replace(/:path/g, variant.path)
-        r.push(Object.assign({}, { id: routeName }, route, { location: (route.path ? `/${route.path}` : '/'), path: newPath }, variant))
-      })
-    } catch (e) {
-    }
-  }
-  return r
-}
+//     if (!route.pathData) {
+//       return []
+//     }
 
-function routes (options: any) {
-  var r: any[] = []
+//     try {
+//       const variants = require(path.resolve(options.dir, options.sectionsRoot, section.name, 'data', `${route.pathData}.json`))
+//       if (!variants || variants.length === 0) {
+//         return []
+//       }
 
-  for (const sectionName in options.config.app) {
-    const section = options.config.app[sectionName]
-    const sectionRoutesBuilder = createSectionRoutes(section, (element: any, section: any) => {
-      var appSection: any;
+//       variants.forEach((variant: any) => {
+//         const newPath = route.path.replace(/:path/g, variant.path)
+//         r.push(Object.assign({}, { id: routeName }, route, { location: (route.path ? `/${route.path}` : '/'), path: newPath }, variant))
+//       })
+//     } catch (e) {
+//     }
+//   }
+//   return r
+// }
 
-      options.sections.forEach((s: any) => {
-        if (s.name === element) {
-          appSection = Object.assign({}, s)
-        }
-      })
+// function routes (options: any) {
+//   var r: any[] = []
 
-      if (appSection && appSection.routes && Object.keys(appSection.routes).length > 0) {
-        r = r.concat(sectionRoutes(appSection, options))
-      }
-    })
-  }
+//   for (const sectionName in options.config.app) {
+//     const section = options.config.app[sectionName]
+//     const sectionRoutesBuilder = createSectionRoutes(section, (element: any, section: any) => {
+//       var appSection: any;
 
-  return r
-}
+//       options.sections.forEach((s: any) => {
+//         if (s.name === element) {
+//           appSection = Object.assign({}, s)
+//         }
+//       })
 
-export function pages (options: any, dev: boolean) {
-  const r = routes(options)
+//       if (appSection && appSection.routes && Object.keys(appSection.routes).length > 0) {
+//         r = r.concat(sectionRoutes(appSection, options))
+//       }
+//     })
+//   }
 
-  if (dev) {
-    return [generateDevPage(options, r[0])]
-  }
+//   return r
+// }
+
+export function pages () {
+  // const r = routes(options)
+
+  // if (dev) {
+    return [generateDevPage()]//options, r[0])]
+  // }
 
   // Add static pages
-  return r.map(route => generateStaticPage(options, route))
+  // return r.map(route => generateStaticPage(options, route))
 }

@@ -1,11 +1,11 @@
 import ejs from 'ejs'
 
 export class WebPlugin {
-  protected _context: any;
+  protected _context?: any;
   protected _done: boolean;
   protected _startTime?: number;
 
-  constructor (context: any) {
+  constructor (context?: any) {
     this._context = context
     this._done = false
   }
@@ -62,18 +62,19 @@ export class WebPlugin {
   }
 
   resolveHtml (data: any, html?: string) {
-    const route = Object.assign({}, data.plugin.options.route, html ? { html } : {})
-    const info = this.context.config.info
+    // const route = Object.assign({}, data.plugin.options.route, html ? { html } : {})
+    // const info = this.context.config.info
 
-    const scripts = this.context.dev ? null : this.context.config.scripts.web
-    const styles = this.context.config.styles.web
+    // const scripts = this.context.dev ? null : this.context.config.scripts.web
+    // const styles = this.context.config.styles.web
     
-    const vars = JSON.stringify({ route: data.plugin.options.route })
+    // const vars = JSON.stringify({ route: data.plugin.options.route })
 
-    const app = { route, info, vars, scripts, styles }
+    // const app = { route, info, vars, scripts, styles }
+    const app = {}
 
-    data.html = ejs.render(data.html, { app })
-
+    // data.html = ejs.render(data.html, { app })
+console.log("??????", data)
     return data
   }
 
@@ -109,11 +110,11 @@ export class WebPlugin {
 
     compiler.hooks.compile.tap(this.constructor.name, (data: any) => this.onStart(data))
 
-    compiler.hooks.compilation.tap(this.constructor.name, (compilation: any)=> {
+    compiler.hooks.compilation.tap(this.constructor.name, (compilation: any) => {
       compilation.hooks.buildModule.tap(this.constructor.name, (module: any) => this.onModuleStart(module))
       compilation.hooks.succeedModule.tap(this.constructor.name, (module: any) => this.onModuleSuccess(module))
       compilation.hooks.failedModule.tap(this.constructor.name, (module: any) => this.onModuleFailure(module))
-      compilation.hooks.htmlWebpackPluginBeforeHtmlProcessing.tapAsync(this.constructor.name, (data: any, done: any) => this.onPageGeneration(compilation, data, done))
+      // compilation.hooks.beforeEmit.tap(this.constructor.name, (data: any, done: any) => this.onPageGeneration(html, data, done))
     })
 
     compiler.hooks.done.tap(this.constructor.name, (stats: any) => this.onDone(stats))
