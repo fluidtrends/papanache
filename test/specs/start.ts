@@ -3,7 +3,7 @@ import savor, {
   Completion
 } from 'savor'
 
-// import axios from 'axios'
+import axios from 'axios'
 import fs from 'fs'
 import path from 'path'
 
@@ -47,33 +47,42 @@ add('starting up once', (context: Context, done: Completion) => {
   })
 }).
 
-// add('starting up and watching', (context: Context, done: Completion) => {
-//   const dir = path.resolve(context.dir, 'app')
-//   const page = path.resolve(dir, 'index.html')
-//   const script = path.resolve(dir, 'src', 'index.tsx')
-//   const assetsGlob = `${path.resolve(dir, 'resources')}/**/*`
+add('starting up and watching', (context: Context, done: Completion) => {
+  const srcDir = path.resolve(context.dir, 'app')
+  const targetDir = path.resolve(context.dir, 'target')
+  const port = 9999
+  const watch = true
 
-//   const opts = Object.assign({}, options, { 
-//     dir, 
-//     page, 
-//     script,
-//     assetsGlob,
-//     once: false 
-//   })
+  const options = {
+    srcDir,
+    port,
+    watch,
+    targetDir
+  } as PackingOptions
   
-//   savor.addAsset('assets/app', 'app', context)
-//   fs.symlinkSync(path.resolve(options.root, 'node_modules'), path.resolve(dir, 'node_modules'), 'dir')
+  const packer = new WebPacker(options)
 
-//   savor.promiseShouldSucceed(web.start(() => {}), () => {}, (server) => {
-//     axios.get(`http://0.0.0.0:${opts.port}`)
-//          .then((response) => {
-//            context.expect(response.status).to.equal(200)
-//            context.expect(response.data).to.exist
-//            server.close()
-//            done()
-//          })
-//          .catch((error) => done(error))
-//   })
-// }).
+  savor.addAsset('assets/app', 'app', context)
+  fs.symlinkSync(path.resolve(__dirname, '../..', 'node_modules'), path.resolve(srcDir, 'node_modules'), 'dir')
+
+  const handler = (event: PackingEvent) => {
+    context.expect(event).to.exist
+  }
+
+  savor.promiseShouldSucceed(packer.pack(handler), () => {}, (instance: PackingInstance) => {
+    context.expect(instance.compiler).to.exist
+    context.expect(instance.config).to.exist
+    context.expect(instance.devServer).to.exist
+  
+    axios.get(`http://0.0.0.0:${options.port}`)
+         .then((response) => {
+           context.expect(response.status).to.equal(200)
+           context.expect(response.data).to.exist
+           instance.devServer?.close()
+           done()
+         })
+         .catch((error) => done(error))
+    })
+}).
 
 run('[Pananache] start')
