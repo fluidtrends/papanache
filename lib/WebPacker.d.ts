@@ -7,6 +7,8 @@ import WebpackDevServer from 'webpack-dev-server';
 export declare class WebPacker implements IWebPacker {
     /** @internal */
     protected _opts: PackingOptions;
+    /** @internal */
+    protected _buildDir: string;
     /**
      *
      * @param opts
@@ -16,6 +18,10 @@ export declare class WebPacker implements IWebPacker {
      *
      */
     get opts(): PackingOptions;
+    /**
+     *
+     */
+    get buildDir(): string;
     /**
      *
      */

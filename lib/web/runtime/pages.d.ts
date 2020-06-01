@@ -1,2 +1,3 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-export declare function pages(): HtmlWebpackPlugin[];
+import { PackingOptions } from '../..';
+export declare function pages(options?: PackingOptions): HtmlWebpackPlugin[];

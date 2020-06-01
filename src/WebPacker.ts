@@ -6,6 +6,7 @@ import {
 } from '.'
 
 import fs from 'fs-extra'
+import path from 'path'
 
 import webpack, { 
     Compiler, 
@@ -24,12 +25,16 @@ export class WebPacker implements IWebPacker {
     /** @internal */
     protected _opts: PackingOptions;
 
+    /** @internal */
+    protected _buildDir: string;
+
     /**
      * 
      * @param opts 
      */
     constructor(opts: PackingOptions) {
         this._opts = opts
+        this._buildDir = path.resolve(this.opts.productDir, '.web')
     }
 
     /**
@@ -42,10 +47,17 @@ export class WebPacker implements IWebPacker {
     /**
      * 
      */
+    get buildDir() {
+      return this._buildDir
+    }
+
+    /**
+     * 
+     */
     async initialize () {
         // Start with a clean target
-        fs.existsSync(this.opts.targetDir) && fs.removeSync(this.opts.targetDir)
-        fs.mkdirsSync(this.opts.targetDir)
+        fs.existsSync(this.buildDir) && fs.removeSync(this.buildDir)
+        fs.mkdirsSync(this.buildDir)
 
         return this
     }
