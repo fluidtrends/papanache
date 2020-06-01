@@ -5,12 +5,16 @@ import {
   createSectionRoutes 
 } from './router'
 
-function generateDevPage () {
+import { 
+  PackingOptions 
+} from '../..'
+
+function generateDevPage (options: PackingOptions) {
   return new HtmlWebpackPlugin({
     cache: false,
     filename: 'index.html',
     inject: false,
-    template: 'assets/web/page.ejs'
+    template: path.resolve(options.srcDir, 'assets/web/page.ejs')
   })
 }
 

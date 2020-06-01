@@ -24,7 +24,7 @@ export function DevConfig (options: PackingOptions): Configuration {
   //                      .concat([{ context: path.resolve(dir, 'assets'), from: '**/*' }])
   
   return {
-    context: options.srcDir,
+    context: options.targetDir,
     entry: [
       'react-hot-loader/patch',
       'webpack-dev-server/client',
@@ -68,7 +68,7 @@ export function DevConfig (options: PackingOptions): Configuration {
       // new CopyWebpackPlugin(assetScripts.map((asset: any) => Object.assign({}, asset, { to: targetAssetsDir, toType: 'dir', force: true })))
     ]
 
-    .concat(pages()),
+    .concat(pages(options)),
     // .concat([new WebPlugin()]),
 
     optimization: {
