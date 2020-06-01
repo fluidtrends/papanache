@@ -68,7 +68,7 @@ export function ProdConfig (options: any): Configuration {
       new ExtractTextPlugin('style.css'),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new CopyWebpackPlugin(assetScripts.map((asset: any) => Object.assign({}, asset, { to: targetAssetsDir, toType: 'dir', force: true })))
-    ].concat(pages()).concat([new StaticPlugin(Object.assign({}, options)),
+    ].concat(pages(options)).concat([new StaticPlugin(Object.assign({}, options)),
       new UglifyJsPlugin({
         extractComments: true
       })

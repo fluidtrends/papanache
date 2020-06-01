@@ -9,12 +9,12 @@ import {
   PackingOptions 
 } from '../..'
 
-function generateDevPage () {
+function generateDevPage (options: PackingOptions) {
   return new HtmlWebpackPlugin({
     cache: false,
     filename: 'index.html',
     inject: false,
-    template: 'assets/web/page.ejs'
+    template: path.resolve(options.dir, 'node_modules', options.stack, 'assets/web/page.ejs')
   })
 }
 
@@ -93,11 +93,11 @@ function generateDevPage () {
 //   return r
 // }
 
-export function pages () {
+export function pages (options: PackingOptions) {
   // const r = routes(options)
 
   // if (dev) {
-    return [generateDevPage()]//options, r[0])]
+    return [generateDevPage(options)]//options, r[0])]
   // }
 
   // Add static pages
