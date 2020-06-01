@@ -110,9 +110,7 @@ export class WebPacker implements IWebPacker {
   /**
    * 
    */
-  async pack (handler: (event: PackingEvent) => void) {
-    console.log(">>>> pack")
-    
+  async pack (handler: (event: PackingEvent) => void) {    
     // Make sure we're start with a clean target
     await this.initialize()
   

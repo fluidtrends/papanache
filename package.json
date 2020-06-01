@@ -1,6 +1,6 @@
 {
   "name": "papanache",
-  "version": "1.9.2",
+  "version": "1.9.8",
   "description": "Stylish App Packer",
   "scripts": {
     "test": "savor test",
@@ -14,7 +14,9 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib/**/*"
+    "lib/**/*",
+    "src/**/*",
+    "tsconfig.json"
   ],
   "homepage": "https://github.com/fluidtrends/papanache",
   "dependencies": {
