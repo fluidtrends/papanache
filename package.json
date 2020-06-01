@@ -1,6 +1,6 @@
 {
   "name": "papanache",
-  "version": "1.9.8",
+  "version": "1.9.9",
   "description": "Stylish App Packer",
   "scripts": {
     "test": "savor test",
@@ -54,6 +54,7 @@
     "style-loader": "^0.18.2",
     "styled-jsx": "^3.2.4",
     "ts-loader": "^7.0.5",
+    "typescript": "^3.9.3",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "url-loader": "0.5.9",
     "webpack": "^4.42.0",

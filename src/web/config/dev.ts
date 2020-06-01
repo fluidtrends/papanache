@@ -83,21 +83,12 @@ export function DevConfig (options: PackingOptions): Configuration {
       port: options.port,
       contentBase: options.targetDir,
       historyApiFallback: true,
+      clientLogLevel: 'silent',
+      stats: 'none',
+      noInfo: true,
       watchContentBase: true,
       hot: true
     }
   }
 }
 
-// host: '0.0.0.0',
-//       compress: false,
-//       inline: true,
-//       liveReload: true,
-//       port: options.port,
-//       contentBase: options.targetDir,
-//       historyApiFallback: true,
-//       clientLogLevel: 'silent',
-//       stats: 'none',
-//       noInfo: true,
-//       watchContentBase: true,
-//       hot: true
