@@ -10,7 +10,7 @@ function generateDevPage () {
     cache: false,
     filename: 'index.html',
     inject: false,
-    template: 'page.ejs'
+    template: 'assets/web/page.ejs'
   })
 }
 
