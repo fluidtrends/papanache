@@ -29,7 +29,7 @@ export function DevConfig (options: PackingOptions): Configuration {
       'react-hot-loader/patch',
       'webpack-dev-server/client',
       'webpack/hot/only-dev-server',
-      path.resolve(options.dir, 'node_modules', options.dir, 'src', 'web', 'main.tsx')
+      path.resolve(options.dir, 'node_modules', options.name, 'src', 'web', 'main.tsx')
     ],
     mode: 'development',    
     output: {
@@ -68,7 +68,7 @@ export function DevConfig (options: PackingOptions): Configuration {
       // new CopyWebpackPlugin(assetScripts.map((asset: any) => Object.assign({}, asset, { to: targetAssetsDir, toType: 'dir', force: true })))
     ]
 
-    .concat(pages()),
+    .concat(pages(options)),
     // .concat([new WebPlugin()]),
 
     optimization: {
