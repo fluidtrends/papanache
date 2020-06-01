@@ -14,7 +14,7 @@ function generateDevPage (options: PackingOptions) {
     cache: false,
     filename: 'index.html',
     inject: false,
-    template: path.resolve(options.dir, 'node_modules', options.stack, 'assets/web/page.ejs')
+    template: path.resolve(options.templateFile)
   })
 }
 
