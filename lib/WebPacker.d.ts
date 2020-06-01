@@ -8,6 +8,8 @@ export declare class WebPacker implements IWebPacker {
     /** @internal */
     protected _opts: PackingOptions;
     /** @internal */
+    protected _productDir: string;
+    /** @internal */
     protected _buildDir: string;
     /**
      *
@@ -22,6 +24,10 @@ export declare class WebPacker implements IWebPacker {
      *
      */
     get buildDir(): string;
+    /**
+    *
+    */
+    get productDir(): string;
     /**
      *
      */
