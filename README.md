@@ -2,7 +2,7 @@
 
 <h1 align="center"> Papanache </h1>
 <h3 align="center"> Stylish App Packer  </h3>
-<p align="center"> Pack that app in style </p>
+<p align="center"> Pack your app in style </p>
 <p align="center"> <img src="https://img.shields.io/github/package-json/v/idancali/papanache?color=green"/></p>
 
 </p>

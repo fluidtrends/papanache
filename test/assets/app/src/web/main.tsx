@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 const App = () =>  (
     <div>
-        <h1>papanache 3works</h1>
+        <h1>papanache works</h1>
     </div>
 )
 
