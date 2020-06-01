@@ -1,6 +1,6 @@
 {
   "name": "papanache",
-  "version": "1.9.9",
+  "version": "1.9.10",
   "description": "Stylish App Packer",
   "scripts": {
     "test": "savor test",
