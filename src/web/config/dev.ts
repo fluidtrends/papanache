@@ -24,17 +24,17 @@ export function DevConfig (options: PackingOptions): Configuration {
   //                      .concat([{ context: path.resolve(dir, 'assets'), from: '**/*' }])
   
   return {
-    context: options.targetDir,
+    context: options.productDir,
     entry: [
       'react-hot-loader/patch',
       'webpack-dev-server/client',
       'webpack/hot/only-dev-server',
-      path.resolve(options.srcDir, 'src', 'web', 'main.tsx')
+      path.resolve(options.stackDir, 'src', 'web', 'main.tsx')
     ],
     mode: 'development',    
     output: {
       filename: `app.js`,
-      path: options.targetDir,
+      path: path.resolve(options.productDir, '.web'),
       libraryTarget: 'umd',
       publicPath: '/'
     },
@@ -47,10 +47,10 @@ export function DevConfig (options: PackingOptions): Configuration {
         'react-dom': require.resolve('@hot-loader/react-dom')
       },
       modules: [
-        path.resolve(options.targetDir),
-        path.resolve(options.targetDir, "node_modules"),
-        path.resolve(options.srcDir),
-        path.resolve(options.srcDir, "node_modules"),
+        path.resolve(options.productDir),
+        path.resolve(options.productDir, "node_modules"),
+        path.resolve(options.bundleDir),
+        path.resolve(options.bundleDir, "node_modules"),
         'node_modules'
       ]
     },
@@ -81,7 +81,7 @@ export function DevConfig (options: PackingOptions): Configuration {
       inline: true,
       liveReload: true,
       port: options.port,
-      contentBase: options.targetDir,
+      contentBase: path.resolve(options.productDir, '.web'),
       historyApiFallback: true,
       clientLogLevel: 'silent',
       stats: 'none',

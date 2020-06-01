@@ -15,8 +15,9 @@ export interface IRunner {
 
 export interface PackingOptions {
     watch: boolean
-    srcDir: string
-    targetDir: string
+    stackDir: string
+    productDir: string
+    bundleDir: string
     port: number
 }
 
@@ -33,6 +34,7 @@ export interface PackingEvent {
 
 export interface IWebPacker {
     readonly opts: PackingOptions
+    readonly buildDir: string;
 
     initialize (): Promise<IWebPacker>;
     listen(compiler: ICompiler, trigger: (event: PackingEvent) => void): Promise<ICompiler>;
