@@ -24,17 +24,17 @@ export function DevConfig (options: PackingOptions): Configuration {
   //                      .concat([{ context: path.resolve(dir, 'assets'), from: '**/*' }])
   
   return {
-    context: options.productDir,
+    context: options.dir,
     entry: [
       'react-hot-loader/patch',
       'webpack-dev-server/client',
       'webpack/hot/only-dev-server',
-      path.resolve(options.stackDir, 'src', 'web', 'main.tsx')
+      path.resolve(options.dir, 'node_modules', options.dir, 'src', 'web', 'main.tsx')
     ],
     mode: 'development',    
     output: {
       filename: `app.js`,
-      path: path.resolve(options.productDir, '.web'),
+      path: path.resolve(options.dir, 'products', options.name, '.web'),
       libraryTarget: 'umd',
       publicPath: '/'
     },
@@ -43,14 +43,14 @@ export function DevConfig (options: PackingOptions): Configuration {
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.json'],
       alias: {
+        "__product":  path.resolve(options.dir, 'products', options.name),
+        "__webapp":  path.resolve(options.dir, 'products', options.name, 'web'),
         moment: 'moment/moment.js',
         'react-dom': require.resolve('@hot-loader/react-dom')
       },
       modules: [
-        path.resolve(options.productDir),
-        path.resolve(options.productDir, "node_modules"),
-        path.resolve(options.bundleDir),
-        path.resolve(options.bundleDir, "node_modules"),
+        path.resolve(options.dir, 'products', options.name, 'node_modules'),
+        path.resolve(options.dir, 'node_modules'),
         'node_modules'
       ]
     },
@@ -68,7 +68,7 @@ export function DevConfig (options: PackingOptions): Configuration {
       // new CopyWebpackPlugin(assetScripts.map((asset: any) => Object.assign({}, asset, { to: targetAssetsDir, toType: 'dir', force: true })))
     ]
 
-    .concat(pages(options)),
+    .concat(pages()),
     // .concat([new WebPlugin()]),
 
     optimization: {
@@ -81,14 +81,23 @@ export function DevConfig (options: PackingOptions): Configuration {
       inline: true,
       liveReload: true,
       port: options.port,
-      contentBase: path.resolve(options.productDir, '.web'),
+      contentBase: path.resolve(options.dir, 'products', options.name, '.web'),
       historyApiFallback: true,
-      clientLogLevel: 'silent',
-      stats: 'none',
-      noInfo: true,
       watchContentBase: true,
       hot: true
     }
   }
 }
 
+// host: '0.0.0.0',
+//       compress: false,
+//       inline: true,
+//       liveReload: true,
+//       port: options.port,
+//       contentBase: path.resolve(options.productDir, '.web'),
+//       historyApiFallback: true,
+//       clientLogLevel: 'silent',
+//       stats: 'none',
+//       noInfo: true,
+//       watchContentBase: true,
+//       hot: true

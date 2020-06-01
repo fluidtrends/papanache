@@ -26,6 +26,9 @@ export class WebPacker implements IWebPacker {
     protected _opts: PackingOptions;
 
     /** @internal */
+    protected _productDir: string;
+
+    /** @internal */
     protected _buildDir: string;
 
     /**
@@ -34,7 +37,8 @@ export class WebPacker implements IWebPacker {
      */
     constructor(opts: PackingOptions) {
         this._opts = opts
-        this._buildDir = path.resolve(this.opts.productDir, '.web')
+        this._productDir = path.resolve(this.opts.dir, this.opts.name)
+        this._buildDir = path.resolve(this.productDir, '.web')
     }
 
     /**
@@ -51,11 +55,19 @@ export class WebPacker implements IWebPacker {
       return this._buildDir
     }
 
+     /**
+     * 
+     */
+    get productDir() {
+      return this._productDir
+    }
+
     /**
      * 
      */
     async initialize () {
         // Start with a clean target
+        fs.existsSync(this.productDir) || fs.removeSync(this.productDir)
         fs.existsSync(this.buildDir) && fs.removeSync(this.buildDir)
         fs.mkdirsSync(this.buildDir)
 
