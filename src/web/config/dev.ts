@@ -29,7 +29,7 @@ export function DevConfig (options: PackingOptions): Configuration {
       'react-hot-loader/patch',
       'webpack-dev-server/client',
       'webpack/hot/only-dev-server',
-      path.resolve(options.srcDir, 'src', 'index.tsx')
+      path.resolve(options.srcDir, 'src', 'web', 'main.tsx')
     ],
     mode: 'development',    
     output: {
