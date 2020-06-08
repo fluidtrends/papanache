@@ -26,9 +26,9 @@ export function DevConfig (options: PackingOptions): Configuration {
   return {
     context: path.resolve(options.contextDir),
     entry: [
-      'react-hot-loader/patch',
-      'webpack-dev-server/client',
-      'webpack/hot/only-dev-server',
+      require.resolve('react-hot-loader/patch'),
+      require.resolve('webpack-dev-server/client'),
+      require.resolve('webpack/hot/only-dev-server'),
       path.resolve(options.entryFile)
     ],
     mode: 'development',    

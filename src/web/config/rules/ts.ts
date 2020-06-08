@@ -1,10 +1,10 @@
 export default (opts?: any) => [{
     test: /\.ts(x?)$/,
     use: {
-        loader: "ts-loader"
+        loader: require.resolve("ts-loader")
     }
 }, {
     test: /\.js$/,
-    loader: 'source-map-loader',
+    loader: require.resolve('source-map-loader'),
     enforce: 'pre'
 }]
