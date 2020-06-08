@@ -5,11 +5,11 @@ const {
 
 export default async (stackDir, productDir) => {
   const contextDir = path.resolve(productDir)
-  const destDir = path.resolve(contextDir, '.web', 'dist')
+  const destDir = path.resolve(contextDir, '.dist', 'web')
   const port = 9999
   const watch = true
   const templateFile = path.resolve(stackDir, 'assets', 'web', 'page.ejs')
-  const entryFile = path.resolve(contextDir, '.web', 'main.tsx')
+  const entryFile = path.resolve(contextDir, 'carmel', '.web', 'main.tsx')
 
   const options = {
     watch,
