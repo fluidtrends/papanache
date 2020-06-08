@@ -1,13 +1,13 @@
 export default (opts?: any) => [{
     test: /\.(html)$/,
     use: {
-        loader: 'html-loader',
+        loader:  require.resolve('html-loader'),
         options: {
         }
 }}, {
     test: /\.css$/,
-    use: ['style-loader', {
-        loader: 'css-loader',
+    use: [ require.resolve('style-loader'), {
+        loader:  require.resolve('css-loader'),
         options: { modules: true }
     }]
 }]

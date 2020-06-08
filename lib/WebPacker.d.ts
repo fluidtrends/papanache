@@ -2,15 +2,11 @@ import { IWebPacker, PackingEvent, PackingOptions } from '.';
 import webpack, { Compiler, Configuration, ICompiler } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 /**
- *
- */
+*
+*/
 export declare class WebPacker implements IWebPacker {
     /** @internal */
     protected _opts: PackingOptions;
-    /** @internal */
-    protected _productDir: string;
-    /** @internal */
-    protected _buildDir: string;
     /**
      *
      * @param opts
@@ -20,14 +16,6 @@ export declare class WebPacker implements IWebPacker {
      *
      */
     get opts(): PackingOptions;
-    /**
-     *
-     */
-    get buildDir(): string;
-    /**
-    *
-    */
-    get productDir(): string;
     /**
      *
      */

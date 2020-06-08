@@ -9,9 +9,11 @@ export interface IRunner {
 }
 export interface PackingOptions {
     watch: boolean;
-    name: string;
-    dir: string;
-    stack: string;
+    templateFile: string;
+    destDir: string;
+    entryFile: string;
+    stackDir: string;
+    contextDir: string;
     port: number;
 }
 export interface PackingInstance {
@@ -25,8 +27,6 @@ export interface PackingEvent {
 }
 export interface IWebPacker {
     readonly opts: PackingOptions;
-    readonly buildDir: string;
-    readonly productDir: string;
     initialize(): Promise<IWebPacker>;
     listen(compiler: ICompiler, trigger: (event: PackingEvent) => void): Promise<ICompiler>;
     compile(compiler: ICompiler): Promise<ICompiler>;
