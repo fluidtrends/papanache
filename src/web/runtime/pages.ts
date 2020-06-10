@@ -7,7 +7,7 @@ import {
 
 import { 
   PackingOptions 
-} from '../..'
+} from '..'
 
 function generateDevPage (options: PackingOptions) {
   return new HtmlWebpackPlugin({

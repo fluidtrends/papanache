@@ -6,7 +6,6 @@ import {
 } from '.'
 
 import fs from 'fs-extra'
-import path from 'path'
 
 import webpack, { 
   Compiler, 
@@ -15,12 +14,12 @@ import webpack, {
 } from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 
-import { DevConfig as makeConfig } from './web/config'
+import { DevConfig as makeConfig } from './config'
 
 /**
 * 
 */
-export class WebPacker implements IWebPacker {
+export class Packer implements IWebPacker {
 
   /** @internal */
   protected _opts: PackingOptions;
@@ -64,8 +63,8 @@ async listen(compiler: Compiler, trigger: (event: PackingEvent) => void) {
   })
   
   compiler.hooks.done.tap("papanache", (stats: any) => {
-    const error = stats.compilation.errors && stats.compilation.errors.length === 0 ? stats.compilation.errors[0] : undefined
-
+    const error = stats.compilation.errors && stats.compilation.errors.length > 0 ? stats.compilation.errors[0] : undefined
+    error && delete error.module && delete error.loaderSource
     trigger(Object.assign({}, error && { error }, { 
       status: PackingEventStatus.STOP_COMPILING
     }))
