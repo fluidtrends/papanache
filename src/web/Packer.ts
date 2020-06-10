@@ -6,7 +6,6 @@ import {
 } from '.'
 
 import fs from 'fs-extra'
-import path from 'path'
 
 import webpack, { 
   Compiler, 
@@ -15,12 +14,12 @@ import webpack, {
 } from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 
-import { DevConfig as makeConfig } from './web/config'
+import { DevConfig as makeConfig } from './config'
 
 /**
 * 
 */
-export class WebPacker implements IWebPacker {
+export class Packer implements IWebPacker {
 
   /** @internal */
   protected _opts: PackingOptions;

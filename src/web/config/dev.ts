@@ -16,7 +16,7 @@ import {
 
 import { 
   PackingOptions 
-} from '../..'
+} from '..'
 
 export function DevConfig (options: PackingOptions): Configuration {
   const assetsDir = path.resolve(options.contextDir, 'carmel', 'assets')
