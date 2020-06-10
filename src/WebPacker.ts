@@ -64,8 +64,8 @@ async listen(compiler: Compiler, trigger: (event: PackingEvent) => void) {
   })
   
   compiler.hooks.done.tap("papanache", (stats: any) => {
-    const error = stats.compilation.errors && stats.compilation.errors.length === 0 ? stats.compilation.errors[0] : undefined
-
+    const error = stats.compilation.errors && stats.compilation.errors.length > 0 ? stats.compilation.errors[0] : undefined
+    error && delete error.module && delete error.loaderSource
     trigger(Object.assign({}, error && { error }, { 
       status: PackingEventStatus.STOP_COMPILING
     }))

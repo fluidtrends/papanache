@@ -1,5 +1,5 @@
 import path from 'path'
-import CopyWebpackPlugin from 'copy-webpack-plugin'
+import CopyPlugin from 'copy-webpack-plugin'
 
 import webpack, {
   Configuration
@@ -19,10 +19,12 @@ import {
 } from '../..'
 
 export function DevConfig (options: PackingOptions): Configuration {
-  // const targetAssetsDir = `${path.resolve(targetDir, 'assets')}/`
-  // const assetScripts = templateAssets.map((asset: any) => ({ context: path.resolve(templateDir, asset.path), from: asset.glob }))
-  //                      .concat([{ context: path.resolve(dir, 'assets'), from: '**/*' }])
-  
+  const assetsDir = path.resolve(options.contextDir, 'carmel', 'assets')
+  const targetAssetsDir = path.resolve(options.destDir, 'assets')
+  const copyAssets = [{
+    from: assetsDir, to: targetAssetsDir, type: "dir", force: true
+  }]
+
   return {
     context: path.resolve(options.contextDir),
     entry: [
@@ -45,25 +47,31 @@ export function DevConfig (options: PackingOptions): Configuration {
       alias: {
         moment: 'moment/moment.js',
         'react-dom': require.resolve('@hot-loader/react-dom')
-      }
-      // modules: [
-      //   'node_modules'
-      // ]
+      },
+      modules: [
+        path.resolve(options.contextDir),
+        path.resolve(options.contextDir, 'node_modules'),
+        path.resolve(options.stackDir),
+        path.resolve(options.stackDir, 'node_modules'),
+        "node_modules"
+      ]
     },
-   
+
     module: {
       noParse: [/moment.js/],
       rules: ConfigRules()
     },
 
     plugins: [
+      new webpack.DefinePlugin({
+        'process.env.carmel': JSON.stringify(options)
+      }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
-      // new CopyWebpackPlugin(assetScripts.map((asset: any) => Object.assign({}, asset, { to: targetAssetsDir, toType: 'dir', force: true })))
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new CopyPlugin(copyAssets)
     ]
-
     .concat(pages(options)),
     // .concat([new WebPlugin()]),
 
@@ -72,10 +80,14 @@ export function DevConfig (options: PackingOptions): Configuration {
     },
 
     devServer: {
+      clientLogLevel: 'silent',
+      stats: 'none',
+      noInfo: true,
       host: '0.0.0.0',
       compress: false,
       inline: true,
       liveReload: true,
+      open: true,
       port: options.port,
       contentBase: path.resolve(options.destDir),
       historyApiFallback: true,
@@ -85,15 +97,3 @@ export function DevConfig (options: PackingOptions): Configuration {
   }
 }
 
-// host: '0.0.0.0',
-//       compress: false,
-//       inline: true,
-//       liveReload: true,
-//       port: options.port,
-//       contentBase: path.resolve(options.productDir, '.web'),
-//       historyApiFallback: true,
-//       clientLogLevel: 'silent',
-//       stats: 'none',
-//       noInfo: true,
-//       watchContentBase: true,
-//       hot: true
