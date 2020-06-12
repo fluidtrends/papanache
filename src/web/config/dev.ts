@@ -51,6 +51,8 @@ export function DevConfig (options: PackingOptions): Configuration {
       modules: [
         path.resolve(options.contextDir),
         path.resolve(options.contextDir, 'node_modules'),
+        path.resolve(options.cacheDir),
+        path.resolve(options.cacheDir, 'node_modules'),
         path.resolve(options.stackDir),
         path.resolve(options.stackDir, 'node_modules'),
         "node_modules"
