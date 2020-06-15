@@ -11,6 +11,7 @@ export interface PackingOptions {
     watch: boolean;
     templateFile: string;
     destDir: string;
+    mainDir: string;
     entryFile: string;
     stackDir: string;
     contextDir: string;

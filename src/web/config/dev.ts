@@ -45,10 +45,11 @@ export function DevConfig (options: PackingOptions): Configuration {
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.json'],
       alias: {
-        moment: 'moment/moment.js',
         'react-dom': require.resolve('@hot-loader/react-dom')
       },
       modules: [
+        path.resolve(options.mainDir),
+        path.resolve(options.mainDir, 'node_modules'),
         path.resolve(options.contextDir),
         path.resolve(options.contextDir, 'node_modules'),
         path.resolve(options.stackDir),
@@ -58,7 +59,6 @@ export function DevConfig (options: PackingOptions): Configuration {
     },
 
     module: {
-      noParse: [/moment.js/],
       rules: ConfigRules()
     },
 
