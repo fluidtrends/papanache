@@ -3,11 +3,15 @@ import html from './html'
 import text from './html'
 import ts from './ts'
 
-export function ConfigRules (): any[] {
+import { 
+  PackingOptions 
+} from '../..'
+
+export function all (options: PackingOptions): any[] {
   return [
-      ...images(), 
-      ...html(),
-      ...text(),
-      ...ts()
+      ...images(options), 
+      ...html(options),
+      ...text(options),
+      ...ts(options)
   ]
 }

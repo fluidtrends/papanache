@@ -14,7 +14,7 @@ import webpack, {
 } from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 
-import { DevConfig as makeConfig } from './config'
+import { Config } from './config'
 
 /**
 * 
@@ -42,8 +42,7 @@ export class Packer implements IWebPacker {
    * 
    */
   async initialize () {
-      // Start with a clean target
-      fs.existsSync(this.opts.contextDir) || fs.removeSync(this.opts.contextDir)
+      // Start with a clean destination
       fs.existsSync(this.opts.destDir) && fs.removeSync(this.opts.destDir)
       fs.mkdirsSync(this.opts.destDir)
 
@@ -115,7 +114,9 @@ async pack (handler: (event: PackingEvent) => void) {
   await this.initialize()
 
   // This is the configuration we want to work with 
-  const config = makeConfig(this.opts)
+  const config = Config(this.opts)
+
+  console.log(">>>>>>>>", config)
 
   // Let's get ourselves a compiler
   const compiler = webpack(config)
