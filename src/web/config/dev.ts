@@ -1,84 +1,23 @@
-import path from 'path'
-import CopyPlugin from 'copy-webpack-plugin'
-
 import webpack, {
   Configuration
 } from 'webpack'
 
-import {
-  ConfigRules 
-} from '../config'
-
-import {
-  pages, 
-  WebPlugin
-} from '../runtime'
+import path from 'path'
 
 import { 
   PackingOptions 
 } from '..'
 
-export function DevConfig (options: PackingOptions): Configuration {
-  const assetsDir = path.resolve(options.contextDir, 'carmel', 'assets')
-  const targetAssetsDir = path.resolve(options.destDir, 'assets')
-  const copyAssets = [{
-    from: assetsDir, to: targetAssetsDir, type: "dir", force: true
-  }]
+export function entries(options: PackingOptions) {
+  return options.watch ? [
+    require.resolve('react-hot-loader/patch'),
+    require.resolve('webpack-dev-server/client'),
+    require.resolve('webpack/hot/only-dev-server')
+  ] : []
+}
 
-  return {
-    context: path.resolve(options.contextDir),
-    entry: [
-      require.resolve('react-hot-loader/patch'),
-      require.resolve('webpack-dev-server/client'),
-      require.resolve('webpack/hot/only-dev-server'),
-      path.resolve(options.entryFile)
-    ],
-    mode: 'development',    
-    output: {
-      filename: `app.js`,
-      path: path.resolve(options.destDir),
-      libraryTarget: 'umd',
-      publicPath: '/'
-    },
-    devtool: 'source-map',
-    target: 'web',
-    resolve: {
-      extensions: ['.tsx', '.ts', '.js', '.json'],
-      alias: {
-        'react-dom': require.resolve('@hot-loader/react-dom')
-      },
-      modules: [
-        path.resolve(options.mainDir),
-        path.resolve(options.mainDir, 'node_modules'),
-        path.resolve(options.contextDir),
-        path.resolve(options.contextDir, 'node_modules'),
-        path.resolve(options.stackDir),
-        path.resolve(options.stackDir, 'node_modules'),
-        "node_modules"
-      ]
-    },
-
-    module: {
-      rules: ConfigRules()
-    },
-
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env.carmel': JSON.stringify(options)
-      }),
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      new CopyPlugin(copyAssets)
-    ]
-    .concat(pages(options)),
-    // .concat([new WebPlugin()]),
-
-    optimization: {
-      nodeEnv: 'development'
-    },
-
+export function server (options: PackingOptions): Configuration {
+  return options.watch ? {
     devServer: {
       clientLogLevel: 'silent',
       stats: 'none',
@@ -94,6 +33,5 @@ export function DevConfig (options: PackingOptions): Configuration {
       watchContentBase: true,
       hot: true
     }
-  }
+  } : {}
 }
-
