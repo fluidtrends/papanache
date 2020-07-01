@@ -1,9 +1,11 @@
 declare const _default: (opts?: any) => ({
     test: RegExp;
-    use: {
+    use: (string | {
         loader: string;
-        options: {};
-    };
+        options: {
+            modules: boolean;
+        };
+    })[];
 } | {
     test: RegExp;
     use: ({
@@ -12,7 +14,10 @@ declare const _default: (opts?: any) => ({
     } | {
         loader: string;
         options: {
-            remarkPlugins: string[];
+            lessOptions: {
+                modifyVars: any;
+                javascriptEnabled: boolean;
+            };
         };
     })[];
 })[];

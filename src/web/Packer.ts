@@ -116,8 +116,6 @@ async pack (handler: (event: PackingEvent) => void) {
   // This is the configuration we want to work with 
   const config = Config(this.opts)
 
-  console.log(">>>>>>>>", config)
-
   // Let's get ourselves a compiler
   const compiler = webpack(config)
 

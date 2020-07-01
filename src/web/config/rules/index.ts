@@ -1,6 +1,6 @@
 import images from './images'
-import html from './html'
-import text from './html'
+import styles from './styles'
+import text from './text'
 import ts from './ts'
 
 import { 
@@ -10,7 +10,7 @@ import {
 export function all (options: PackingOptions): any[] {
   return [
       ...images(options), 
-      ...html(options),
+      ...styles(options),
       ...text(options),
       ...ts(options)
   ]
