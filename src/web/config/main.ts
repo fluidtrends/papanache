@@ -1,6 +1,8 @@
 import {
   Configuration
 } from 'webpack'
+import TerserJSPlugin from 'terser-webpack-plugin'
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 
 import { 
   PackingOptions 
@@ -14,7 +16,7 @@ export function Config (options: PackingOptions): Configuration {
     context: path.resolve(options.contextDir),
     entry: [...config.dev.entries(options), path.resolve(options.entryFile)],
 
-    mode: options.watch ? 'development' : 'production',   
+    mode: options.isStatic ? 'production' : 'development',   
     devtool: 'source-map',
     target: 'web',
 
@@ -33,13 +35,22 @@ export function Config (options: PackingOptions): Configuration {
       rules: config.rules.all(options)
     },
    
-    optimization: { 
-      nodeEnv: options.watch ? 'development' : 'production'
-    },
+    optimization: options.isStatic ? {
+      minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+      splitChunks: {
+        cacheGroups: {
+          styles: {
+            name: 'app',
+            test: /\.css$/,
+            chunks: 'all',
+            enforce: true,
+          }
+        }
+      },
+    }: {},
    
     plugins: config.plugins.all(options),
 
     ...config.dev.server(options)
   }
 }
-

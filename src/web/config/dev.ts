@@ -9,19 +9,16 @@ import {
 } from '..'
 
 export function entries(options: PackingOptions) {
-  return options.watch ? [
+  return options.isStatic ? [] : [
     require.resolve('react-hot-loader/patch'),
     require.resolve('webpack-dev-server/client'),
     require.resolve('webpack/hot/only-dev-server')
-  ] : []
+  ]
 }
 
 export function server (options: PackingOptions): Configuration {
   return options.watch ? {
     devServer: {
-      clientLogLevel: 'silent',
-      stats: 'none',
-      noInfo: true,
       host: '0.0.0.0',
       compress: false,
       inline: true,

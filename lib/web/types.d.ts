@@ -15,6 +15,7 @@ export interface PackingOptions {
     entryFile: string;
     stackDir: string;
     contextDir: string;
+    isStatic: boolean;
     port: number;
 }
 export interface PackingInstance {

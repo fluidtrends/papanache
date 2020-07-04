@@ -3,6 +3,29 @@ declare const _default: (opts?: any) => ({
     use: (string | {
         loader: string;
         options: {
+            hmr: boolean;
+            reloadAll: boolean;
+        };
+    })[];
+} | {
+    test: RegExp;
+    use: ({
+        loader: string;
+        options?: undefined;
+    } | {
+        loader: string;
+        options: {
+            lessOptions: {
+                modifyVars: any;
+                javascriptEnabled: boolean;
+            };
+        };
+    })[];
+})[] | ({
+    test: RegExp;
+    use: (string | {
+        loader: string;
+        options: {
             modules: boolean;
         };
     })[];
