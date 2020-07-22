@@ -12,16 +12,34 @@ import path from 'path'
 import * as config from '.'
 
 export function Config (options: PackingOptions): Configuration {
+  let entry: any = {}//[...config.dev.entries(options), path.resolve(options.entryFile)]
+  let chunks: any = {}
+
+  // if (options.isStatic) {
+    entry = { __main: path.resolve(options.entryFile) }
+    options.chunks.map((chunkId: string) => {
+      const chunk = require(`${options.mainDir}/carmel/chunks/${chunkId}/chunk.json`)
+      chunks[chunkId] = chunk
+      entry[chunkId] = path.resolve(options.stackDir, options.entry.chunk)
+    })
+  // }
+
   return {
     context: path.resolve(options.contextDir),
-    entry: [...config.dev.entries(options), path.resolve(options.entryFile)],
-
+    entry,
     mode: options.isStatic ? 'production' : 'development',   
-    devtool: 'source-map',
     target: 'web',
 
     output: {
-      filename: `app.js`,
+      filename: (pathData) => {
+        if (pathData.chunk.name === '__main') {
+          return 'app.js' 
+        }
+
+        const chunk = chunks[pathData.chunk.name]
+        const chunkRoot = chunk.path.substring(1)
+        return `${chunkRoot}${chunkRoot.length === 0 ? '' : '/'}chunk.js`
+      },
       path: path.resolve(options.destDir),
       libraryTarget: 'umd',
       publicPath: '/'
@@ -36,6 +54,7 @@ export function Config (options: PackingOptions): Configuration {
     },
    
     optimization: options.isStatic ? {
+      minimize: true,
       minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
       splitChunks: {
         cacheGroups: {
@@ -44,7 +63,11 @@ export function Config (options: PackingOptions): Configuration {
             test: /\.css$/,
             chunks: 'all',
             enforce: true,
-          }
+          },
+          defaultVendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10
+          },
         }
       },
     }: {},
@@ -54,3 +77,4 @@ export function Config (options: PackingOptions): Configuration {
     ...config.dev.server(options)
   }
 }
+

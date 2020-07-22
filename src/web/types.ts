@@ -17,6 +17,10 @@ export interface PackingOptions {
     watch: boolean
     templateFile: string
     destDir: string
+    chunks: string[]
+    stackConfig: any
+    target: string
+    entry: any
     mainDir: string
     entryFile: string
     stackDir: string

@@ -9,7 +9,7 @@ import {
 } from '..'
 
 export function entries(options: PackingOptions) {
-  return options.isStatic ? [] : [
+  return [
     require.resolve('react-hot-loader/patch'),
     require.resolve('webpack-dev-server/client'),
     require.resolve('webpack/hot/only-dev-server')
