@@ -6,9 +6,9 @@ import { PackingOptions  } from '..'
 export function all(options: PackingOptions): Resolve {
       return {
         extensions: ['.tsx', '.ts', '.js', '.json'],
-        alias: options.watch ? {
+        alias: options.isStatic ? {} : {
           'react-dom': require.resolve('@hot-loader/react-dom')
-        }: {},
+        },
         modules: [
           path.resolve(options.mainDir),
           path.resolve(options.mainDir, 'node_modules'),

@@ -1,6 +1,8 @@
 import {
   Configuration
 } from 'webpack'
+import TerserJSPlugin from 'terser-webpack-plugin'
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 
 import { 
   PackingOptions 
@@ -10,16 +12,34 @@ import path from 'path'
 import * as config from '.'
 
 export function Config (options: PackingOptions): Configuration {
+  let entry: any = {}//[...config.dev.entries(options), path.resolve(options.entryFile)]
+  let chunks: any = {}
+
+  // if (options.isStatic) {
+    entry = { __main: path.resolve(options.entryFile) }
+    options.chunks.map((chunkId: string) => {
+      const chunk = require(`${options.mainDir}/carmel/chunks/${chunkId}/chunk.json`)
+      chunks[chunkId] = chunk
+      entry[chunkId] = path.resolve(options.stackDir, options.entry.chunk)
+    })
+  // }
+
   return {
     context: path.resolve(options.contextDir),
-    entry: [...config.dev.entries(options), path.resolve(options.entryFile)],
-
-    mode: options.watch ? 'development' : 'production',   
-    devtool: 'source-map',
+    entry,
+    mode: options.isStatic ? 'production' : 'development',   
     target: 'web',
 
     output: {
-      filename: `app.js`,
+      filename: (pathData) => {
+        if (pathData.chunk.name === '__main') {
+          return 'app.js' 
+        }
+
+        const chunk = chunks[pathData.chunk.name]
+        const chunkRoot = chunk.path.substring(1)
+        return `${chunkRoot}${chunkRoot.length === 0 ? '' : '/'}chunk.js`
+      },
       path: path.resolve(options.destDir),
       libraryTarget: 'umd',
       publicPath: '/'
@@ -33,9 +53,24 @@ export function Config (options: PackingOptions): Configuration {
       rules: config.rules.all(options)
     },
    
-    optimization: { 
-      nodeEnv: options.watch ? 'development' : 'production'
-    },
+    optimization: options.isStatic ? {
+      minimize: true,
+      minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+      splitChunks: {
+        cacheGroups: {
+          styles: {
+            name: 'app',
+            test: /\.css$/,
+            chunks: 'all',
+            enforce: true,
+          },
+          defaultVendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10
+          },
+        }
+      },
+    }: {},
    
     plugins: config.plugins.all(options),
 
