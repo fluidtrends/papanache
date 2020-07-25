@@ -7,7 +7,6 @@ import { PackingOptions, StaticPlugin } from '..'
 
 export function all (options: PackingOptions): Plugin[] {
 
-  console.log("PAPAPAPA", options)
     const assetsDir = path.resolve(options.contextDir, 'carmel', 'assets')
     const targetAssetsDir = path.resolve(options.destDir, 'assets')
     const copyAssets = [{
