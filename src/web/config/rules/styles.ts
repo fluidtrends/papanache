@@ -22,7 +22,7 @@ export default (opts?: any) => opts?.isStatic ? [{
         loader: require.resolve('less-loader'),
         options: {
             lessOptions: { 
-                modifyVars: opts?.theme || {},
+                modifyVars: {},
                 javascriptEnabled: true,
             },
         },
@@ -30,7 +30,7 @@ export default (opts?: any) => opts?.isStatic ? [{
 }] : [{
     test: /\.css$/,
     use: [ require.resolve('style-loader'), {
-        loader:  require.resolve('css-loader'),
+        loader: require.resolve('css-loader'),
         options: { modules: true }
     }]
 }, {
@@ -43,7 +43,7 @@ export default (opts?: any) => opts?.isStatic ? [{
         loader: require.resolve('less-loader'),
         options: {
             lessOptions: { 
-                modifyVars: opts?.theme || {},
+                modifyVars: {},
                 javascriptEnabled: true,
             },
         },

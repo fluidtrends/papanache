@@ -23,7 +23,7 @@ export function server (options: PackingOptions): Configuration {
       compress: false,
       inline: true,
       liveReload: true,
-      open: false,
+      open: true,
       port: options.port,
       contentBase: path.resolve(options.destDir),
       historyApiFallback: true,

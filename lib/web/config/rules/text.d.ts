@@ -1,9 +1,18 @@
-declare const _default: (opts?: any) => ({
+declare const _default: (options?: any) => ({
     test: RegExp;
     use: {
         loader: string;
         options: {};
     };
+} | {
+    test: RegExp;
+    use: ({
+        loader: string;
+        options?: undefined;
+    } | {
+        loader: string;
+        options: {};
+    })[];
 } | {
     test: RegExp;
     use: ({

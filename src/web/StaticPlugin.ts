@@ -59,9 +59,6 @@ export class StaticPlugin {
 
         newData.assets.js = newData.assets.js.map((asset: string) => path.relative(rootPath, asset))
 
-        // console.log(newData)
-
-        // console.log(newData)
 
         // const route = Object.assign({}, data.plugin.options.route, html ? { html } : {})
         // const info = this.context.config.info
@@ -75,7 +72,6 @@ export class StaticPlugin {
         // const app = {}
     
         // data.html = ejs.render(data.html, { app })
-        // console.log("??????", data)
         // return data
     
         done(null, newData)
@@ -87,7 +83,9 @@ export class StaticPlugin {
      */
     apply(compiler: any) {
         compiler.hooks.compilation.tap(this.constructor.name, (compilation: any) => {
-            compilation.hooks.htmlWebpackPluginBeforeHtmlProcessing.tapAsync(this.constructor.name, (data: any, done: any) => this.generate(compilation, data, done))   
+            HtmlWebpackPlugin.getHooks(compilation).beforeAssetTagGeneration.tapAsync(
+                'papanache', (data: any, done: any) => this.generate(compilation, data, done) 
+              )
         })
     }
 }

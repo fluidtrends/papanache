@@ -1,10 +1,24 @@
-export default (opts?: any) => [{
+const path = require('path')
+
+export default (options?: any) => [{
   test: /\.(html)$/,
   use: {
       loader:  require.resolve('html-loader'),
       options: {
       }
   }
+}, {
+  test: /\.md$/,
+  use: [
+      {
+          loader: require.resolve("html-loader")
+      },
+      {
+          loader: require.resolve("markdown-loader"),
+          options: {
+          }
+      }
+  ]
 }, {
   test: /\.mdx?$/,
   use: [

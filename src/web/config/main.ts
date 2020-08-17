@@ -14,7 +14,7 @@ import * as config from '.'
 export function Config (options: PackingOptions): Configuration {
   let entry: any = {}
   let chunks: any = {}
-
+   
     entry = { __main: path.resolve(options.entryFile) }
     options.chunks.map((chunkId: string) => {
       const chunk = require(`${options.mainDir}/carmel/chunks/${chunkId}/chunk.json`)
