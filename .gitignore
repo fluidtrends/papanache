@@ -4,6 +4,7 @@ node_modules
 *.log
 .chunky
 coverage
+yarn.lock
 build
 \.idea/
 dist
