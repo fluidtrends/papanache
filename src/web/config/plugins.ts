@@ -3,7 +3,6 @@ import CopyPlugin from 'copy-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack, { Plugin } from 'webpack'
-import FaviconsWebpackPlugin from 'favicons-webpack-plugin'
 
 import { PackingOptions, StaticPlugin, DynamicPlugin  } from '..'
 
@@ -21,8 +20,6 @@ export function all (options: PackingOptions): Plugin[] {
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
             'process.env.carmel': JSON.stringify(options)
         }),
-        new webpack.NamedModulesPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new CopyPlugin(copyAssets),
     ]  
@@ -54,11 +51,6 @@ export function all (options: PackingOptions): Plugin[] {
       all.push(new webpack.HotModuleReplacementPlugin())
       all.push(new DynamicPlugin(options))
     }
-
-    all.push(new FaviconsWebpackPlugin({
-      logo,
-      inject: true
-    }))
 
     return all
 }
