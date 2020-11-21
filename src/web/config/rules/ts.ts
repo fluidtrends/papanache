@@ -13,8 +13,8 @@ export default (opts?: any) => [{
       }
     },
     exclude: /node_modules/
-}, {
-    test: /\.js$/,
-    loader: require.resolve('source-map-loader'),
-    enforce: 'pre'
+// }, {
+//     test: /\.js$/,
+//     loader: require.resolve('source-map-loader'),
+//     enforce: 'pre'
 }]

@@ -1,4 +1,4 @@
-declare const _default: (opts?: any) => ({
+declare const _default: (opts?: any) => {
     test: RegExp;
     loader: string;
     options: {
@@ -11,12 +11,5 @@ declare const _default: (opts?: any) => ({
         };
     };
     exclude: RegExp;
-    enforce?: undefined;
-} | {
-    test: RegExp;
-    loader: string;
-    enforce: string;
-    options?: undefined;
-    exclude?: undefined;
-})[];
+}[];
 export default _default;
