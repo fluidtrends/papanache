@@ -52,33 +52,36 @@ export function Config (options: PackingOptions): Configuration {
     },
 
     // externals: {
-    //   react: {
-    //     root: "React",
-    //     commonjs: "react",
-    //     commonjs2: "react",
-    //     amd: "react"
-    //   },
-    //   immediate: "immediate"
+    //   antd: "antd"
+    // },
+      // react: {
+      //   root: "React",
+      //   commonjs: "react",
+      //   commonjs2: "react",
+      //   amd: "react"
+      // }
     // },
    
-    optimization: options.isStatic ? {
-      minimize: true,
-      minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
-      splitChunks: {
-        cacheGroups: {
-          styles: {
-            name: 'app',
-            test: /\.css$/,
-            chunks: 'all',
-            enforce: true,
-          },
-          defaultVendors: {
-            test: /[\\/]node_modules[\\/]/,
-            priority: -10
-          },
-        }
-      },
-    }: {},
+    optimization: {},
+
+    // optimization: options.isStatic ? {
+    //   minimize: true,
+    //   minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    //   splitChunks: {
+    //     cacheGroups: {
+    //       styles: {
+    //         name: 'app',
+    //         test: /\.css$/,
+    //         chunks: 'all',
+    //         enforce: true,
+    //       },
+    //       defaultVendors: {
+    //         test: /[\\/]node_modules[\\/]/,
+    //         priority: -10
+    //       },
+    //     }
+    //   },
+    // }: {},
    
     plugins: config.plugins.all(options),
 

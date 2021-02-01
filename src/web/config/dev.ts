@@ -20,7 +20,8 @@ export function server (options: PackingOptions): Configuration {
   return options.watch ? {
     devServer: {
       host: '0.0.0.0',
-      compress: false,
+      // compress: false,
+      stats: { colors: false },
       inline: true,
       liveReload: true,
       open: false,
@@ -28,7 +29,7 @@ export function server (options: PackingOptions): Configuration {
       contentBase: path.resolve(options.destDir),
       historyApiFallback: true,
       watchContentBase: true,
-      hot: false
+      hot: true
     }
   } : {}
 }
