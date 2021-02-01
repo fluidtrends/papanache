@@ -28,7 +28,7 @@ export function server (options: PackingOptions): Configuration {
       contentBase: path.resolve(options.destDir),
       historyApiFallback: true,
       watchContentBase: true,
-      hot: true
+      hot: false
     }
   } : {}
 }

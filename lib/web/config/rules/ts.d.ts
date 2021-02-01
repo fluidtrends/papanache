@@ -10,6 +10,5 @@ declare const _default: (opts?: any) => {
             module: string;
         };
     };
-    exclude: RegExp;
 }[];
 export default _default;

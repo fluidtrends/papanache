@@ -3,6 +3,7 @@ import CopyPlugin from 'copy-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack, { Plugin } from 'webpack'
+import WorkerPlugin from 'worker-plugin'
 
 import { PackingOptions, StaticPlugin, DynamicPlugin  } from '..'
 
@@ -22,6 +23,7 @@ export function all (options: PackingOptions): Plugin[] {
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new CopyPlugin(copyAssets),
+        new WorkerPlugin()
     ]  
     
     options.chunks.map((chunkId: string) => {

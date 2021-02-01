@@ -50,6 +50,16 @@ export function Config (options: PackingOptions): Configuration {
     module: {
       rules: config.rules.all(options)
     },
+
+    // externals: {
+    //   react: {
+    //     root: "React",
+    //     commonjs: "react",
+    //     commonjs2: "react",
+    //     amd: "react"
+    //   },
+    //   immediate: "immediate"
+    // },
    
     optimization: options.isStatic ? {
       minimize: true,

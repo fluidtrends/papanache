@@ -1,6 +1,6 @@
 {
   "name": "papanache",
-  "version": "1.11.6",
+  "version": "1.12.0",
   "description": "Stylish App Packer",
   "scripts": {
     "test": "savor test",
@@ -37,6 +37,7 @@
     "@types/uglifyjs-webpack-plugin": "^1.1.0",
     "@types/webpack": "^4.41.18",
     "@types/webpack-dev-server": "^3.10.1",
+    "@types/worker-plugin": "^4.0.0",
     "babel-loader": "^8.1.0",
     "compression-webpack-plugin": "^1.0.1",
     "copy-webpack-plugin": "^4.6.0",
@@ -52,6 +53,8 @@
     "html-webpack-externals-plugin": "^3.8.0",
     "html-webpack-plugin": "^4.3.0",
     "image-loader": "0.0.1",
+    "immediate": "^3.3.0",
+    "ipfs": "^0.53.0",
     "jsdom": "^16.2.1",
     "json-loader": "^0.5.7",
     "less-loader": "^6.1.2",
@@ -79,7 +82,8 @@
     "uglifyjs-webpack-plugin": "^1.2.4",
     "url-loader": "0.5.9",
     "webpack": "^4.42.0",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.10.3",
+    "worker-plugin": "^5.0.0"
   },
   "devDependencies": {
     "@types/react-dom": "^16.9.8",

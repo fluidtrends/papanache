@@ -7,7 +7,9 @@ export function all(options: PackingOptions): Resolve {
       return {
         extensions: ['.tsx', '.ts', '.js', '.json'],
         alias: options.isStatic ? {} : {
-          'react-dom': require.resolve('@hot-loader/react-dom')
+          'react-dom': require.resolve('@hot-loader/react-dom'),
+          immediate: require.resolve('immediate'),
+          worker: 'worker-plugin/loader?esModule'
         },
         modules: [
           path.resolve(options.mainDir),

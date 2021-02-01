@@ -12,7 +12,7 @@ export default (opts?: any) => [{
         module: 'es2015'
       }
     },
-    exclude: /node_modules/
+    //exclude: /node_modules/
 // }, {
 //     test: /\.js$/,
 //     loader: require.resolve('source-map-loader'),
