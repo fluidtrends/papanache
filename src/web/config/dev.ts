@@ -9,26 +9,29 @@ import {
 } from '..'
 
 export function entries(options: PackingOptions) {
-  return [
+  return options.watch ? [
     require.resolve('react-hot-loader/patch'),
     require.resolve('webpack-dev-server/client'),
     require.resolve('webpack/hot/only-dev-server')
-  ]
+  ]: []
 }
 
 export function server (options: PackingOptions): Configuration {
   return options.watch ? {
     devServer: {
-      host: '0.0.0.0',
-      // compress: false,
+      host: 'localhost',
+      compress: false,
       stats: { colors: false },
       inline: true,
-      liveReload: true,
+      liveReload: false,
+      publicPath: "/",
       open: false,
       port: options.port,
+      writeToDisk: false,
       contentBase: path.resolve(options.destDir),
       historyApiFallback: true,
-      watchContentBase: true,
+      watchContentBase: false,
+      https: false,
       hot: true
     }
   } : {}

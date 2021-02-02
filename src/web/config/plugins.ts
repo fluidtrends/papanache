@@ -16,6 +16,8 @@ export function all (options: PackingOptions): Plugin[] {
       from: assetsDir, to: targetAssetsDir, type: "dir", force: true
     }]
 
+    console.log("OPS", options)
+
     let all = [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),

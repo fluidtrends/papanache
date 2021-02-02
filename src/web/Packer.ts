@@ -93,6 +93,7 @@ export class Packer implements IWebPacker {
    * @param config 
    */
   async startDevServer(compiler: Compiler, config: Configuration) {
+    console.log("***CNFIG", config)
     const server = new WebpackDevServer(compiler, config.devServer)
 
     return new Promise<WebpackDevServer>((resolve, reject) => {
