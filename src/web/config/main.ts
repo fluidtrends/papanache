@@ -15,11 +15,13 @@ export function Config (options: PackingOptions): Configuration {
   let entry: any = {}
   let chunks: any = {}
    
-    entry = { __main: [...config.dev.entries(options), path.resolve(options.entryFile)] }
-    options.chunks.map((chunkId: string) => {
+  entry = { __main: path.resolve(options.entryFile) }
+  // entry = { __main: [...config.dev.entries(options), path.resolve(options.entryFile)] }
+  options.chunks.map((chunkId: string) => {
       const chunk = require(`${options.mainDir}/carmel/chunks/${chunkId}/chunk.json`)
       chunks[chunkId] = chunk
-      entry[chunkId] = [...config.dev.entries(options), path.resolve(options.stackDir, options.entry.chunk) ]
+      // entry[chunkId] = [...config.dev.entries(options), path.resolve(options.stackDir, options.entry.chunk) ]
+      entry[chunkId] = path.resolve(options.stackDir, options.entry.chunk)
     })
 
   return {

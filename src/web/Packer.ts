@@ -111,6 +111,8 @@ export class Packer implements IWebPacker {
    * 
    */
   async pack (handler: (event: PackingEvent) => void) {    
+    process.env.NODE_ENV = "development"
+
     // Make sure we're start with a clean target
     await this.initialize()
 
@@ -130,6 +132,7 @@ export class Packer implements IWebPacker {
     }
 
     // We wanna watch for events so let's build a server
+    process.env.NODE_ENV = "development"
     const devServer = await this.startDevServer(compiler, config)
 
     // Let callers access the goodies

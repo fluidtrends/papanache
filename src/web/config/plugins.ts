@@ -4,6 +4,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack, { Plugin } from 'webpack'
 import WorkerPlugin from 'worker-plugin'
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 
 import { PackingOptions, StaticPlugin, DynamicPlugin  } from '..'
 
@@ -53,6 +54,7 @@ export function all (options: PackingOptions): Plugin[] {
       }))
     } else {
       all.push(new webpack.HotModuleReplacementPlugin())
+      all.push(new ReactRefreshWebpackPlugin())
       all.push(new DynamicPlugin(options))
     }
 

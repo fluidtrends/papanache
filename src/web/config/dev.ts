@@ -11,8 +11,9 @@ import {
 export function entries(options: PackingOptions) {
   return options.watch ? [
     require.resolve('react-hot-loader/patch'),
-    require.resolve('webpack-dev-server/client'),
-    require.resolve('webpack/hot/only-dev-server')
+    require.resolve(`webpack-dev-server/client`),
+    require.resolve('webpack/hot/only-dev-server'),
+    path.resolve(options.stackDir, 'node_modules', '@carmel', 'js', 'src', 'index.ts'),
   ]: []
 }
 
@@ -23,16 +24,21 @@ export function server (options: PackingOptions): Configuration {
       compress: false,
       stats: { colors: false },
       inline: true,
-      liveReload: false,
+      liveReload: true,
       publicPath: "/",
       open: false,
       port: options.port,
       writeToDisk: false,
       contentBase: path.resolve(options.destDir),
       historyApiFallback: true,
-      watchContentBase: false,
+      watchContentBase: true,
       https: false,
-      hot: true
+      hot: true,
+      watchOptions: {
+        ignored: [
+            
+        ]
+      }
     }
   } : {}
 }
