@@ -1,20 +1,18 @@
 const tsImportPluginFactory = require('ts-import-plugin')
+const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default
 
 export default (opts?: any) => [{
     test: /\.ts(x?)$/,
     loader: require.resolve("ts-loader"),
+    exclude: /node_modules/,
     options: {
       transpileOnly: true,
       getCustomTransformers: () => ({
-        before: [ tsImportPluginFactory() ]
+        before: [ tsImportPluginFactory(), createStyledComponentsTransformer() ]
       }),
       compilerOptions: {
         module: 'es2015'
       }
     },
-    //exclude: /node_modules/
-// }, {
-//     test: /\.js$/,
-//     loader: require.resolve('source-map-loader'),
-//     enforce: 'pre'
-}]
+  }
+]

@@ -8,14 +8,14 @@ import {
   PackingOptions 
 } from '..'
 
-export function entries(options: PackingOptions) {
-  return options.watch ? [
-    require.resolve('react-hot-loader/patch'),
-    require.resolve(`webpack-dev-server/client`),
-    require.resolve('webpack/hot/only-dev-server'),
-    path.resolve(options.stackDir, 'node_modules', '@carmel', 'js', 'src', 'index.ts'),
-  ]: []
-}
+// export function entries(options: PackingOptions) {
+//   return options.watch ? [
+//     require.resolve('react-hot-loader/patch'),
+//     require.resolve(`webpack-dev-server/client`),
+//     require.resolve('webpack/hot/only-dev-server'),
+//     path.resolve(options.stackDir, 'node_modules', '@carmel', 'js', 'src', 'index.ts'),
+//   ]: []
+// }
 
 export function server (options: PackingOptions): Configuration {
   return options.watch ? {
@@ -28,7 +28,7 @@ export function server (options: PackingOptions): Configuration {
       publicPath: "/",
       open: false,
       port: options.port,
-      writeToDisk: false,
+      writeToDisk: true,
       contentBase: path.resolve(options.destDir),
       historyApiFallback: true,
       watchContentBase: true,

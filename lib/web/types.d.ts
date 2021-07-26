@@ -2,7 +2,8 @@ import { Configuration, ICompiler } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 export declare enum PackingEventStatus {
     START_COMPILING = "startCompiling",
-    STOP_COMPILING = "stopCompiling"
+    STOP_COMPILING = "stopCompiling",
+    GENERATE_SITE = "generateSite"
 }
 export interface IRunner {
     run(): Promise<any>;

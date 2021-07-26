@@ -5,8 +5,10 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack, { Plugin } from 'webpack'
 import WorkerPlugin from 'worker-plugin'
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
-
+import { JSDOM } from 'jsdom'
 import { PackingOptions, StaticPlugin, DynamicPlugin  } from '..'
+
+const __DOM = new JSDOM("<!DOCTYPE html><div/>")
 
 export function all (options: PackingOptions): Plugin[] {
 
@@ -17,8 +19,6 @@ export function all (options: PackingOptions): Plugin[] {
       from: assetsDir, to: targetAssetsDir, type: "dir", force: true
     }]
 
-    console.log("OPS", options)
-
     let all = [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
@@ -26,7 +26,9 @@ export function all (options: PackingOptions): Plugin[] {
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new CopyPlugin(copyAssets),
-        new WorkerPlugin()
+        new WorkerPlugin({
+          globalObject: options.isStatic ? false : 'self'
+        })
     ]  
     
     options.chunks.map((chunkId: string) => {
@@ -40,10 +42,10 @@ export function all (options: PackingOptions): Plugin[] {
         chunk,
         chunks: ['__main', chunk.name],
         inject: true,
-        minify: {
-          collapseWhitespace: true,
-          preserveLineBreaks: true
-        }
+        // minify: {
+        //   collapseWhitespace: true,
+        //   preserveLineBreaks: true
+        // }
       }))
     })   
 

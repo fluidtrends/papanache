@@ -39,12 +39,15 @@ export class StaticPlugin {
             const __DOM = new JSDOM("<!DOCTYPE html><div/>")
             const { window } = __DOM
 
+            _global.self = __DOM.window
             _global.window = __DOM.window
             _global.document = window.document
 
             const header = `global.__DOM = true`
             return requireFromString(`${header}; ${source}`)
-        } catch {}
+        } catch (e: any) {
+            console.log(e)
+        }
     }
 
     /**
@@ -57,8 +60,18 @@ export class StaticPlugin {
         let newData = Object.assign({}, data)
         let rootPath = data.plugin.options.chunk.path
 
-        newData.assets.js = newData.assets.js.map((asset: string) => path.relative(rootPath, asset))
+        // console.log("***** CHUNK PATH:", data.plugin.options.chunk.path)
+        // console.log(Object.keys(compilation.assets))
+        // const app = this.load(compilation, "app.js")
+        // console.log(app)
 
+        // console.log("***** newData", newData)
+        // newData.assets.js = newData.assets.js.map((asset: string) => path.relative(rootPath, asset))
+        // console.log("***** 2.", newData.assets.js)
+        // console.log("***** HTML:", newData.html)
+
+        // console.log(data.plugin.options)
+        // console.log(newData.assets)
 
         // const route = Object.assign({}, data.plugin.options.route, html ? { html } : {})
         // const info = this.context.config.info
@@ -83,7 +96,7 @@ export class StaticPlugin {
      */
     apply(compiler: any) {
         compiler.hooks.compilation.tap(this.constructor.name, (compilation: any) => {
-            HtmlWebpackPlugin.getHooks(compilation).beforeAssetTagGeneration.tapAsync(
+            HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tapAsync(
                 'papanache', (data: any, done: any) => this.generate(compilation, data, done) 
               )
         })

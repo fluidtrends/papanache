@@ -7,7 +7,11 @@ export function all(options: PackingOptions): Resolve {
       return {
         extensions: ['.tsx', '.ts', '.js', '.json'],
         alias: {
-          ...(options.isStatic ? {} : { 'react-dom': require.resolve('@hot-loader/react-dom') }),
+          ...(options.isStatic ? {} : { 
+            'react-dom-root': path.resolve(path.dirname(require.resolve('@hot-loader/react-dom'))),
+            'react-dom/server': path.resolve(path.dirname(require.resolve('@hot-loader/react-dom')), 'server.browser.js'),
+            'react-dom': require.resolve('@hot-loader/react-dom'),
+          }),
           immediate: require.resolve('immediate'),
           worker: 'worker-plugin/loader?esModule'
         },
