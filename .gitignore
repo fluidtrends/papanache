@@ -4,8 +4,11 @@ node_modules
 *.log
 .chunky
 coverage
+yarn.lock
 build
 \.idea/
 dist
 cc-test-reporter
 .test
+pnpm-lock.yaml
+papanache

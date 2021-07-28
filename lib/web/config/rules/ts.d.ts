@@ -1,6 +1,7 @@
-declare const _default: (opts?: any) => ({
+declare const _default: (opts?: any) => {
     test: RegExp;
     loader: string;
+    exclude: RegExp;
     options: {
         transpileOnly: boolean;
         getCustomTransformers: () => {
@@ -10,13 +11,5 @@ declare const _default: (opts?: any) => ({
             module: string;
         };
     };
-    exclude: RegExp;
-    enforce?: undefined;
-} | {
-    test: RegExp;
-    loader: string;
-    enforce: string;
-    options?: undefined;
-    exclude?: undefined;
-})[];
+}[];
 export default _default;

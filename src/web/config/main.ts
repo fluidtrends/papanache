@@ -14,13 +14,13 @@ import * as config from '.'
 export function Config (options: PackingOptions): Configuration {
   let entry: any = {}
   let chunks: any = {}
-
-    entry = { __main: path.resolve(options.entryFile) }
-    options.chunks.map((chunkId: string) => {
+     
+  entry = { __main: path.resolve(options.entryFile) }
+  options.chunks.map((chunkId: string) => {
       const chunk = require(`${options.mainDir}/carmel/chunks/${chunkId}/chunk.json`)
       chunks[chunkId] = chunk
       entry[chunkId] = path.resolve(options.stackDir, options.entry.chunk)
-    })
+  })
 
   return {
     context: path.resolve(options.contextDir),
@@ -50,9 +50,9 @@ export function Config (options: PackingOptions): Configuration {
     module: {
       rules: config.rules.all(options)
     },
-   
+
     optimization: options.isStatic ? {
-      minimize: true,
+      minimize: false,
       minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
       splitChunks: {
         cacheGroups: {

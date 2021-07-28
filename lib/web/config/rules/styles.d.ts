@@ -16,7 +16,7 @@ declare const _default: (opts?: any) => ({
         loader: string;
         options: {
             lessOptions: {
-                modifyVars: any;
+                modifyVars: {};
                 javascriptEnabled: boolean;
             };
         };
@@ -38,7 +38,7 @@ declare const _default: (opts?: any) => ({
         loader: string;
         options: {
             lessOptions: {
-                modifyVars: any;
+                modifyVars: {};
                 javascriptEnabled: boolean;
             };
         };

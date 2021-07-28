@@ -3,10 +3,16 @@ import CopyPlugin from 'copy-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack, { Plugin } from 'webpack'
-import { PackingOptions, StaticPlugin } from '..'
+import WorkerPlugin from 'worker-plugin'
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
+import { JSDOM } from 'jsdom'
+import { PackingOptions, StaticPlugin, DynamicPlugin  } from '..'
+
+const __DOM = new JSDOM("<!DOCTYPE html><div/>")
 
 export function all (options: PackingOptions): Plugin[] {
 
+    const logo = path.resolve(options.contextDir, 'carmel', 'assets', 'en', 'images', 'logo-light.png')
     const assetsDir = path.resolve(options.contextDir, 'carmel', 'assets')
     const targetAssetsDir = path.resolve(options.destDir, 'assets')
     const copyAssets = [{
@@ -18,10 +24,11 @@ export function all (options: PackingOptions): Plugin[] {
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
             'process.env.carmel': JSON.stringify(options)
         }),
-        new webpack.NamedModulesPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new CopyPlugin(copyAssets),
+        new WorkerPlugin({
+          globalObject: options.isStatic ? false : 'self'
+        })
     ]  
     
     options.chunks.map((chunkId: string) => {
@@ -35,10 +42,10 @@ export function all (options: PackingOptions): Plugin[] {
         chunk,
         chunks: ['__main', chunk.name],
         inject: true,
-        minify: {
-          collapseWhitespace: true,
-          preserveLineBreaks: true
-        }
+        // minify: {
+        //   collapseWhitespace: true,
+        //   preserveLineBreaks: true
+        // }
       }))
     })   
 
@@ -49,6 +56,8 @@ export function all (options: PackingOptions): Plugin[] {
       }))
     } else {
       all.push(new webpack.HotModuleReplacementPlugin())
+      all.push(new ReactRefreshWebpackPlugin())
+      all.push(new DynamicPlugin(options))
     }
 
     return all
